@@ -371,6 +371,8 @@ void CColorMapDisplayState::Update()
 	PCHARINFO pCharInfo = GetCharInfo();
 	if (pCharInfo == NULL)
 		return;
+	if(GetCharInfo()->zoneId > MAX_ZONES)
+		return;
 
 	const char* zoneName = GetFullZone(pCharInfo->zoneId);
 	m_title->SetText(zoneName);
