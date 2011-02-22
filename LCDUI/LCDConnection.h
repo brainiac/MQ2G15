@@ -1,4 +1,12 @@
 //************************************************************************
+//  The Logitech LCD SDK, including all acompanying documentation,
+//  is protected by intellectual property laws.  All use of the Logitech
+//  LCD SDK is subject to the License Agreement found in the
+//  "Logitech LCD SDK License Agreement" file and in the Reference Manual.  
+//  All rights not expressly granted by Logitech are reserved.
+//************************************************************************
+
+//************************************************************************
 //
 // LCDConnection.h
 //
@@ -7,7 +15,7 @@
 // 
 // Logitech LCD SDK
 //
-// Copyright 2008 Logitech Inc.
+// Copyright 2010 Logitech Inc.
 //************************************************************************
 
 #ifndef __LCDCONNECTION_H__
@@ -93,16 +101,7 @@ protected:
     virtual void FreeMonoOutput(void);
     virtual void FreeColorOutput(void);
 
-private:
-	CHAR m_szTitle[256];
-    lgLcdConnectContextEx m_lcdConnectCtxEx;
-    int m_hConnection;
-
-    APPLET_STATE m_AppletState;
-
-    lgLcdSoftbuttonsChangedContext* m_plcdSoftButtonsChangedCtx;
-
-private:
+protected:
     // Internal threaded event handling
     enum CB_TYPE { CBT_BUTTON, CBT_CONFIG, CBT_NOTIFICATION };
     typedef struct CB_EVENT
@@ -116,12 +115,27 @@ private:
 
     } CB_EVENT;
 
+    int m_hConnection;
+
+    APPLET_STATE m_AppletState;
+
+    
+    BOOL GetNextCallbackEvent(CB_EVENT& rEvent);
+
+private:
+    lgLcdConnectContextEx m_lcdConnectCtxEx;
+
+    lgLcdSoftbuttonsChangedContext* m_plcdSoftButtonsChangedCtx;
+
+	CHAR m_szTitle[256];
+
+private:
     typedef std::queue<CB_EVENT> LCD_CB_EVENT_QUEUE;
 
     CRITICAL_SECTION m_csCallback;
     LCD_CB_EVENT_QUEUE m_CallbackEventQueue;
     
-    BOOL GetNextCallbackEvent(CB_EVENT& rEvent);
+
 
 private:
     static LONG g_lInitCount;

@@ -1,4 +1,12 @@
 //************************************************************************
+//  The Logitech LCD SDK, including all acompanying documentation,
+//  is protected by intellectual property laws.  All use of the Logitech
+//  LCD SDK is subject to the License Agreement found in the
+//  "Logitech LCD SDK License Agreement" file and in the Reference Manual.  
+//  All rights not expressly granted by Logitech are reserved.
+//************************************************************************
+
+//************************************************************************
 //
 // LCDStreamingText.cpp
 //
@@ -8,7 +16,7 @@
 // 
 // Logitech LCD SDK
 //
-// Copyright 2008 Logitech Inc.
+// Copyright 2010 Logitech Inc.
 //************************************************************************
 
 #include "LCDUI.h"
@@ -155,15 +163,18 @@ void CLCDStreamingText::SetOrigin(int nX, int nY)
 	m_Origin.y = nY;
 
     LCD_OBJECT_LIST::iterator it = m_Objects.begin();
-	if (it != m_Objects.end())
+	while(it != m_Objects.end())
 	{
-        CLCDBase *pObject = *it;
+        CLCDBase *pObject = *it++;
+        LCDUIASSERT(NULL != pObject);
+
 		POINT ptOldOrigin = pObject->GetOrigin();
 		pObject->SetOrigin(nX, nY);
 
 		if ( (ptOldOrigin.x != nX) && (ptOldOrigin.y != nY) )
         {
             ResetUpdate();
+            break;
         }
     }
 }
@@ -738,7 +749,6 @@ void CLCDStreamingText::ApplyOrigins(int nOffset)
         RecalcTextBoxOrigins();
         m_pQueueHead = (CLCDText*)RetrieveObject(0);
     }
-
 }
 
 

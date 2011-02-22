@@ -170,6 +170,7 @@ typedef union
 #define LGLCD_DEVICE_FAMILY_QVGA_BASIC              (0x00000020)
 #define LGLCD_DEVICE_FAMILY_QVGA_GAMING             (0x00000040)
 #define LGLCD_DEVICE_FAMILY_GAMEBOARD_G13           (0x00000080)
+#define LGLCD_DEVICE_FAMILY_KEYBOARD_G510           (0x00000100)
 #define LGLCD_DEVICE_FAMILY_OTHER                   (0x80000000)
 
 // Combinations of device families (device clans?)
@@ -178,7 +179,8 @@ typedef union
                                                    | LGLCD_DEVICE_FAMILY_JACKBOX \
                                                    | LGLCD_DEVICE_FAMILY_BW_160x43_BASIC \
                                                    | LGLCD_DEVICE_FAMILY_RAINBOW \
-                                                   | LGLCD_DEVICE_FAMILY_GAMEBOARD_G13)
+                                                   | LGLCD_DEVICE_FAMILY_GAMEBOARD_G13 \
+                                                   | LGLCD_DEVICE_FAMILY_KEYBOARD_G510)
 
 #define LGLCD_DEVICE_FAMILY_ALL_QVGA                (LGLCD_DEVICE_FAMILY_QVGA_BASIC \
                                                    | LGLCD_DEVICE_FAMILY_QVGA_GAMING)

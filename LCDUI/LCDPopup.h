@@ -1,4 +1,12 @@
 //************************************************************************
+//  The Logitech LCD SDK, including all acompanying documentation,
+//  is protected by intellectual property laws.  All use of the Logitech
+//  LCD SDK is subject to the License Agreement found in the
+//  "Logitech LCD SDK License Agreement" file and in the Reference Manual.  
+//  All rights not expressly granted by Logitech are reserved.
+//************************************************************************
+
+//************************************************************************
 //
 // LCDPopup.h
 //
@@ -6,7 +14,7 @@
 // 
 // Logitech LCD SDK
 //
-// Copyright 2008 Logitech Inc.
+// Copyright 2010 Logitech Inc.
 //************************************************************************
 
 #ifndef _LCDPOPUP_H_INCLUDED_ 
@@ -15,6 +23,8 @@
 #include "LCDPage.h"
 #include "LCDText.h"
 #include "LCDBitmap.h"
+#include <gdiplus.h>
+
 
 //************************************************************************
 //
@@ -76,10 +86,11 @@ protected:
     // Resizes automatically, so this is now private
     virtual void SetSize(int nCX, int nCY);
 
-private:
-    int m_nMaxPopupWidth;
-    CLCDPopupBackground m_Background;
     CLCDText m_MessageText, m_OKText, m_CancelText;
+    CLCDPopupBackground m_Background;
+    int m_nMaxPopupWidth;
+private:
+
     CLCDBitmap m_OKBitmap, m_CancelBitmap;
     PB_TYPE m_pbType;
 };

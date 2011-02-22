@@ -1,4 +1,12 @@
 //************************************************************************
+//  The Logitech LCD SDK, including all acompanying documentation,
+//  is protected by intellectual property laws.  All use of the Logitech
+//  LCD SDK is subject to the License Agreement found in the
+//  "Logitech LCD SDK License Agreement" file and in the Reference Manual.  
+//  All rights not expressly granted by Logitech are reserved.
+//************************************************************************
+
+//************************************************************************
 //
 // LCDOutput.h
 //
@@ -10,7 +18,7 @@
 // 
 // Logitech LCD SDK
 //
-// Copyright 2008 Logitech Inc.
+// Copyright 2010 Logitech Inc.
 //************************************************************************
 
 #ifndef _CLCDOUTPUT_H_INCLUDED_ 
@@ -82,19 +90,17 @@ protected:
     virtual void OnClosingDevice(int hDevice);
     virtual void OnOpenedDevice(int hDevice);
 
+    int m_hDevice;
+    CLCDPage* m_pActivePage;
+    DWORD m_nPriority;
+    CLCDGfxBase* m_pGfx;
+
 private:
     HRESULT HandleErrorFromAPI(DWORD dwRes);
     void HandleButtonState(DWORD dwButtonState, DWORD dwButton);
 
-    CLCDPage* m_pActivePage;
-
-    int m_hDevice;
     BOOL m_bSetAsForeground;
     DWORD m_dwButtonState;
-
-    DWORD m_nPriority;
-
-    CLCDGfxBase* m_pGfx;
 
     lgLcdOpenByTypeContext m_OpenByTypeContext;
 };
