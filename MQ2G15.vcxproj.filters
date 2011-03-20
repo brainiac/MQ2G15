@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0939fc09-7d78-4ad9-89bb-eaa683c411f4}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Source Files\LCD SDK">
+      <UniqueIdentifier>{dac51c28-e055-4e76-b43e-441430603ed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TinyXML">
+      <UniqueIdentifier>{71156d2d-fb3b-4e85-9289-142c3154e59e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{b90c7921-97bb-44a3-98c0-bb2ca9019c4e}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Header Files\LCD SDK">
+      <UniqueIdentifier>{bfce0b4c-e1f8-406f-8b16-3de94c29948b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TinyXML">
+      <UniqueIdentifier>{92188b98-14eb-4a10-a92c-79decdb8d30a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{7a756764-923d-4c0d-889e-bb8091311af2}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MQ2G15.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MQ2G15Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MQ2G15PageManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MQ2G15Pages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MQ2G15PagesMono.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDAnimatedBitmap.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDBase.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDBitmap.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDCollection.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDColorProgressBar.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDColorText.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDConnection.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDFont.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDGfxBase.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDGfxColor.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDGfxMono.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDIcon.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDLine.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDOutput.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDPage.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDPaginateText.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDPopup.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDProgressBar.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDRectangle.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDScrollingText.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDSkinnedProgressBar.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDStreamingText.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="LCDUI\LCDText.cpp">
+      <Filter>Source Files\LCD SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyStr.cpp">
+      <Filter>Source Files\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXml.cpp">
+      <Filter>Source Files\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXmlError.cpp">
+      <Filter>Source Files\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXmlParser.cpp">
+      <Filter>Source Files\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FontData6x4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FontData7x5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FontData8x8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MQ2G15.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MQ2G15Bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MQ2G15Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MQ2G15PageManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MQ2G15Pages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MQ2G15PagesColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MQ2G15PagesMono.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGLObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDAnimatedBitmap.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDBase.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDBitmap.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDCollection.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDColorProgressBar.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDColorText.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDConnection.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDFont.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDGfxBase.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDGfxColor.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDGfxMono.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDIcon.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDLine.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDOutput.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDPage.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDPaginateText.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDPopup.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDProgressBar.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDRectangle.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDScrollingText.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDSkinnedProgressBar.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDStreamingText.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDText.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDUI\LCDUI.h">
+      <Filter>Header Files\LCD SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyStr.h">
+      <Filter>Header Files\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyXml.h">
+      <Filter>Header Files\TinyXML</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="compass.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="g15placeholder.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="hourglass.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="mq2.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\debug\MQ2G15Config.xml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="octopus.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="outofcombat.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="swords.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="waterdrop.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MQ2G15.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
