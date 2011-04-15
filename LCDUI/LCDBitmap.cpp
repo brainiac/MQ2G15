@@ -288,7 +288,7 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 	{
 		TRACE(_T("ERROR: CBitmap::LoadImageFromResource CreateStreamOnHGlobal returned %d\n"), dwRet);
 		GlobalFree(hGlobal);
-		return dwRet;
+		return dwRet != 0;
 	}
 
 	// Use GDI+ to generate a bitmap
