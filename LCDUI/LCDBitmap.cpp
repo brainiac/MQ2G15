@@ -241,32 +241,32 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 	{
 		TRACE(_T("CBitmap::LoadImageFromResource(): failed to locate resource 0x%x (type: 0x%x) in instance 0x%x.\n"),
 			nResourceID, sResourceType, hInstance);
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	DWORD dwImageSize = SizeofResource(hInstance, hResource);
 	if (0 == dwImageSize)
 	{
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	const void* pResourceData = LockResource(LoadResource(hInstance, hResource));
 	if (NULL == pResourceData)
 	{
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	HGLOBAL hGlobal = GlobalAlloc(GMEM_MOVEABLE | GMEM_DISCARDABLE, dwImageSize);
 	if (NULL == hGlobal)
 	{
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	void* pBuffer = GlobalLock(hGlobal);
 	if (NULL == pBuffer)
 	{
 		GlobalFree(hGlobal);
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	CopyMemory(pBuffer, pResourceData, dwImageSize);
@@ -277,7 +277,7 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 		TRACE(_T("cBitmap::LoadImageFromResource(): failed to load resource 0x%x (type: 0x%x) in instance 0x%x.\n"),
 			nResourceID, sResourceType, hInstance);
 		GlobalFree(hGlobal);
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	// Create an IStram from the HGLOBAL
@@ -298,7 +298,7 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 	{
 		TRACE(_T("ERROR: CBitmap::LoadImageFromResource Gdiplus::Bitmap::FromStream failed\n"));
 		GlobalFree(hGlobal);
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	// We don;t need the global memory block anymore
@@ -315,7 +315,7 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 			delete m_pGdiPlusBitmap;
 			m_pGdiPlusBitmap = NULL;
 		}
-		return E_FAIL;
+		return (bool)E_FAIL;
 	}
 
 	// Get the bitmap dimensions
@@ -327,7 +327,7 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 
 	m_hBitmap = hBitmap;
 
-	return S_OK;
+	return (bool)S_OK;
 }
 
 //** end of LCDBitmap.cpp ************************************************
