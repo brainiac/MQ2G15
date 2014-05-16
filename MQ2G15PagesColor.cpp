@@ -371,10 +371,15 @@ void CColorMapDisplayState::Update()
 	PCHARINFO pCharInfo = GetCharInfo();
 	if (pCharInfo == NULL)
 		return;
-	if(GetCharInfo()->zoneId > MAX_ZONES)
+	int ZoneID=0;
+	if(GetCharInfo())
+		ZoneID=GetCharInfo()->zoneId;
+    if(ZoneID > MAX_ZONES)
+        ZoneID &= 0x7FFF;
+	if(ZoneID <=0 || ZoneID >= MAX_ZONES)
 		return;
 
-	const char* zoneName = GetFullZone(pCharInfo->zoneId);
+	const char* zoneName = GetFullZone(ZoneID);
 	m_title->SetText(zoneName);
 
 	m_map->BeginDraw();
