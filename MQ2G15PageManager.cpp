@@ -223,7 +223,7 @@ CPageState* CMQ2G15PageManager::GetPageByName(const string& name)
 	while (page != NULL)
 	{
 		string pname = page->GetName();
-		if (!stricmp(name.c_str(), pname.c_str()))
+		if (!_stricmp(name.c_str(), pname.c_str()))
 			return page;
 
 		page = page->Next();
@@ -242,7 +242,7 @@ bool CMQ2G15PageManager::SetPageByName(const string& name)
 			ASSERT(page != NULL);
 
 			string pname = page->GetName();
-			if (!stricmp(name.c_str(), pname.c_str()))
+			if (!_stricmp(name.c_str(), pname.c_str()))
 			{
 				SetActivePage(page);
 				return true;

@@ -413,13 +413,13 @@ void CColorMapDisplayState::HandleCommands(const char *string)
 	CHAR szTemp[MAX_STRING];
 	GetArg(szTemp, string, 2);
 
-	if (!stricmp(szTemp, "spawns"))
+	if (!_stricmp(szTemp, "spawns"))
 	{
 		bool showSpawns = !m_map->GetShowSpawns();
 		m_map->SetShowSpawns(showSpawns);
 		WriteChatf("MQ2G19 Map: Spawns are now %s.", showSpawns ? "visible" : "hidden");
 	}
-	else if (!stricmp(szTemp, "targetline"))
+	else if (!_stricmp(szTemp, "targetline"))
 	{
 		bool targetLine = !m_map->GetShowTargetLine();
 		m_map->SetShowTargetLine(targetLine);

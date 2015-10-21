@@ -91,11 +91,11 @@ void CMQ2G15::g15Command(PCHAR line)
 	char buffer[MAX_STRING];
 	GetArg(buffer, line, 1);
 
-	if (!stricmp(buffer, "reload"))
+	if (!_stricmp(buffer, "reload"))
 	{
 		loadPages();
 	}
-	else if (!stricmp(buffer, "page"))
+	else if (!_stricmp(buffer, "page"))
 	{
 		GetArg(buffer, line, 2);
 		if (!m_pageManager->SetPageByName(buffer))
@@ -103,19 +103,19 @@ void CMQ2G15::g15Command(PCHAR line)
 			WriteChatf("\ar" PLUGIN_MODE ": Page \"%s\" not found", buffer);
 		}
 	}
-	else if (!stricmp(buffer, "next"))
+	else if (!_stricmp(buffer, "next"))
 	{
 		m_pageManager->SetPageNext();
 	}
-	else if (!stricmp(buffer, "prev"))
+	else if (!_stricmp(buffer, "prev"))
 	{
 		m_pageManager->SetPagePrevious();
 	}
-	else if (!stricmp(buffer, "list"))
+	else if (!_stricmp(buffer, "list"))
 	{
 		m_pageManager->ListPages();
 	}
-	else if (!stricmp(buffer, "screenshot"))
+	else if (!_stricmp(buffer, "screenshot"))
 	{
 #ifdef MQ2G19_ENABLED
 		WriteChatf("Screenshot feature not available in G19 mode.");
@@ -125,7 +125,7 @@ void CMQ2G15::g15Command(PCHAR line)
 #endif
 	}
 #ifdef MQ2G19_ENABLED
-	else if (!stricmp(buffer, "map"))
+	else if (!_stricmp(buffer, "map"))
 	{
 		CPageState* page = m_pageManager->GetPageByName("Map");
 		if (page != NULL)
@@ -225,7 +225,7 @@ bool FindPlugin(PCHAR PluginName)
 		char szTemp[MAX_STRING];
 		strcpy_s(szTemp, pPlugin->szFilename);
 
-		if (!stricmp(szTemp, PluginName))
+		if (!_stricmp(szTemp, PluginName))
 			return true;
 		pPlugin = pPlugin->pNext;
 	}
