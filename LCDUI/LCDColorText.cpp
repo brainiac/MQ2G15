@@ -60,7 +60,7 @@ CLCDColorText::CLCDColorText(void)
     lf.lfWeight = 400;
     lf.lfWidth = 0;
 
-    wsprintf(lf.lfFaceName, _T("Times New Roman") );
+    wsprintf_s(lf.lfFaceName, _T("Times New Roman") );
 
     m_hFont = CreateFontIndirect(&lf);
 

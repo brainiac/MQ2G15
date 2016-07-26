@@ -237,7 +237,7 @@ PLUGIN_API void InitializePlugin()
 	if (!MMOAllowedPlugin(mqplugin::ghPluginModule, PLUGIN_NAME))
 	{
 		char szBuffer[MAX_STRING] = {0};
-		sprintf(szBuffer, "/timed 10 /plugin %s unload", PLUGIN_NAME);
+		sprintf_s(szBuffer, "/timed 10 /plugin %s unload", PLUGIN_NAME);
 		EzCommand(szBuffer);
 		return;
 	}
