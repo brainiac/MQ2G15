@@ -293,7 +293,7 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 
 	// Use GDI+ to generate a bitmap
 	m_pGdiPlusBitmap = Gdiplus::Bitmap::FromStream(pStream);
-	pStream->Release();
+	//pStream->Release();
 	if (!m_pGdiPlusBitmap)
 	{
 		TRACE(_T("ERROR: CBitmap::LoadImageFromResource Gdiplus::Bitmap::FromStream failed\n"));

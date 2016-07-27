@@ -12,7 +12,7 @@
 #pragma message ("Building for G15 Support")
 #endif
 
-CHAR INIFileName[MAX_PATH] = {0};
+CHAR INIFileName[MAX_STRING] = {0};
 CHAR PLUGIN_NAME[MAX_PATH] = PLUGIN_MODE;
 HINSTANCE ghModuleInstance = 0;
 
