@@ -724,7 +724,7 @@ void CLCDConnection::FreeColorOutput(void)
 void CLCDConnection::SetTitle(const char* name)
 {
 	ASSERT(name != NULL);
-	strncpy(m_szTitle, name, 256);
+	strcpy_s(m_szTitle, name);
 	m_lcdConnectCtxEx.appFriendlyName = m_szTitle;
 	
 	Connect();

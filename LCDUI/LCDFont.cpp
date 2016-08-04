@@ -162,7 +162,7 @@ void CLCDFont::SetText(const char* text)
 	ASSERT(text != NULL);
 	if (text && strcmp(text, m_text))
 	{
-		strncpy(m_text, text, MAX_TEXT);
+		strcpy_s(m_text, text);
 		m_length = strlen(text);
 
 		m_invalidated = true;

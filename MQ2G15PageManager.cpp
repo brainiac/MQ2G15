@@ -386,15 +386,15 @@ void CMQ2G15PageManager::Screenshot(string filename)
 #ifndef MQ2G19_ENABLED
 	if (filename.length() == 0)
 	{
-		struct tm	*newTime;
+		struct tm	newTime;
 		time_t		szClock;
 		CHAR buffer[256];
 
 		time(&szClock);
-		newTime = localtime(&szClock);
+		localtime_s(&newTime, &szClock);
 
-		sprintf_s(buffer, 256, "MQ2G15 %i-%02i-%02i %02i-%02i-%02i.bmp", newTime->tm_year + 1900,
-			newTime->tm_mon, newTime->tm_mday, newTime->tm_hour, newTime->tm_min, newTime->tm_sec);
+		sprintf_s(buffer, 256, "MQ2G15 %i-%02i-%02i %02i-%02i-%02i.bmp", newTime.tm_year + 1900,
+			newTime.tm_mon, newTime.tm_mday, newTime.tm_hour, newTime.tm_min, newTime.tm_sec);
 		
 		filename = buffer;
 	}

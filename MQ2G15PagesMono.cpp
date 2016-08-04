@@ -386,7 +386,7 @@ void CStaticDemoState::Update()
 	{
 		if (pSpawn->Type == SPAWN_CORPSE)
 		{
-			sprintf_s(buffer, 256, "    0", pSpawn->HPMax);
+			sprintf_s(buffer, 256, "    0");
 			m_hpPct->SetText("DEAD");
 		}
 		else
@@ -600,7 +600,7 @@ void CXmlState::Update()
 				{
 					XmlText* text = (XmlText*)element->base;
 
-					strncpy(buffer, text->getText().c_str(), MAX_STRING);
+					strcpy_s(buffer, text->getText().c_str());
 					ParseMacroParameter(NULL, buffer);		
 
 					SetLCDObjectText(element->object, buffer);
@@ -611,7 +611,7 @@ void CXmlState::Update()
 				{
 					XmlProgressBar* bar = (XmlProgressBar*)element->base;
 
-					strncpy(buffer, bar->getValue().c_str(), MAX_STRING);
+					strcpy_s(buffer, bar->getValue().c_str());
 					ParseMacroParameter(NULL, buffer);
 
 					CLCDProgressBar* pBar = dynamic_cast<CLCDProgressBar*>(element->object);

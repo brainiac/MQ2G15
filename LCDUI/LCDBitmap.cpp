@@ -215,7 +215,7 @@ void CLCDBitmap::RotateBlit(HDC destDC, int x1, int y1, int x2, int y2, HDC srcD
 			double nx = ((double)x - c) * sin(theta) - ((double)y - c) * cos(theta);
 			double ny = ((double)x - c) * cos(theta) + ((double)y - c) * sin(theta);
 
-			SetPixel(memDC, nx + c + 0.5, ny + c + 0.5, color);
+			SetPixel(memDC, (int)(nx + c + 0.5), (int)(ny + c + 0.5), color);
 		}
 	}
 
