@@ -391,7 +391,7 @@ void CStaticDemoState::Update()
 		}
 		else
 		{
-			sprintf_s(buffer, 256, "%5i", pSpawn->HPCurrent);
+			sprintf_s(buffer, 256, "%5I64d", pSpawn->HPCurrent);
 			m_hpPct->SetText(" UNC");
 		}
 		m_hpText->SetText(buffer);
@@ -400,7 +400,7 @@ void CStaticDemoState::Update()
 	else
 	{
 		//sprintf_s(buffer, 256, "%i/%i", pSpawn->HPCurrent, pSpawn->HPMax);
-		sprintf_s(buffer, 256, "%5i", pSpawn->HPCurrent);
+		sprintf_s(buffer, 256, "%5I64d", pSpawn->HPCurrent);
 		m_hpText->SetText(buffer);
 		sprintf_s(buffer, 256, "%3i%%", (int)percent);
 		m_hpPct->SetText(buffer);
