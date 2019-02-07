@@ -139,7 +139,7 @@ void CLCDFont::OnDraw(CLCDGfxBase &rGfx)
 		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hDC, m_hBitmap);
 
 		// render each character one at a time
-		for (int i = 0; i < m_length; i++)
+		for (int i = 0; i < m_length && i < MAX_TEXT; i++)
 		{
 			int xpos = i * dw;
 			DrawCharacter(hDC, (unsigned char)m_text[i], xpos, 0, m_fontSize);
