@@ -250,7 +250,7 @@ PLUGIN_API void InitializePlugin()
 	else
 	{
 		WriteChatf("Couldn't load " PLUGIN_MODE ". " PLUGIN_OPPOSITE " is currently loaded. To load this plugin, please unload " PLUGIN_OPPOSITE " first.");
-		DoCommand(NULL, "/plugin " PLUGIN_MODE " unload");
+		DoCommand((GetCharInfo() && GetCharInfo()->pSpawn) ? GetCharInfo()->pSpawn : NULL, "/plugin " PLUGIN_MODE " unload");
 		g_plugin = NULL;
 	}
 }
