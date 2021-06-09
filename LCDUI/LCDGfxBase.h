@@ -23,7 +23,7 @@
 #ifndef __LCDGFXBASE_H__
 #define __LCDGFXBASE_H__
 
-#include <lglcd.h>
+#include "../LCDSDK/lglcd.h"
 
 
 #if _MSC_VER >= 1400  

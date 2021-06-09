@@ -11,8 +11,11 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 // ----------------------------------------------------------------------------
 
-// Handle for our bitmap resources
-extern HINSTANCE ghModuleInstance;
+namespace mqplugin {
+	// Handle for our bitmap resources
+	extern HINSTANCE ghPluginModule;
+}
+using namespace mqplugin;
 
 #pragma region CPageState class
 CPageState::CPageState()
@@ -73,7 +76,7 @@ void CScreenSaverState::Init()
 #ifdef MQ2G19_ENABLED
 	m_bitmap = new CLCDBitmap();
 	m_bitmap->SetOrigin(0, 0);
-	m_bitmap->LoadFromResource(ghModuleInstance, IDB_MQ2PNG, "PNG");
+	m_bitmap->LoadFromResource(ghPluginModule, IDB_MQ2PNG, "PNG");
 	m_bitmap->SetObjectType(LG_BITMAP);
 
 	AddObject(m_bitmap);

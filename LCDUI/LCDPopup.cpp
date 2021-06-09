@@ -447,7 +447,7 @@ void CLCDPopup::RecalcLayout(void)
                 }
 
                 // Add the bitmap w/ margin on the bottom
-                nOKTextWithBitmapHeight = max(bmOK.bmHeight, m_OKText.GetHeight());
+                nOKTextWithBitmapHeight = std::max<int>(bmOK.bmHeight, m_OKText.GetHeight());
                 nPopupHeight += nOKTextWithBitmapHeight;
                 nPopupHeight += POPUP_MARGIN;
 
@@ -478,7 +478,7 @@ void CLCDPopup::RecalcLayout(void)
                     nPopupWidth = nCalcPopupWidth;
                 }
 
-                nPopupHeight += max(bmCancel.bmHeight, m_CancelText.GetHeight());
+                nPopupHeight += max<int>(bmCancel.bmHeight, m_CancelText.GetHeight());
                 nPopupHeight += POPUP_MARGIN;
 
                 // Vertically center the OK and CANCEL bitmaps against their respective texts

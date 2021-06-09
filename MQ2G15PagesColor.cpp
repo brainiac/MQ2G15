@@ -96,8 +96,7 @@ int CLCDMapObject::DrawZoneMapLayer(int layer)
 	glBegin(GL_LINES);
 
 	int count = 0;
-	PEQMAPWINDOW map = ((PEQMAPWINDOW)pMapViewWnd);
-	PMAPLINE lines = map->pLines;
+	PMAPLINE lines = pMapViewWnd->MapView.pLines;
 	while (lines != NULL)
 	{
 		if (lines->Layer == layer)

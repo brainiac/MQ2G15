@@ -12,19 +12,7 @@
 #pragma message ("Building for G15 Support")
 #endif
 
-CHAR INIFileName[MAX_STRING] = {0};
-CHAR PLUGIN_NAME[MAX_PATH] = PLUGIN_MODE;
-HINSTANCE ghModuleInstance = 0;
-
-BOOL APIENTRY DllMain(HINSTANCE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
-{
-	if (ul_reason_for_call == DLL_PROCESS_ATTACH)
-	{
-		ghModuleInstance = hModule;
-	}
-	return TRUE;
-}
-
+PreSetup(PLUGIN_MODE)
 CMQ2G15* g_plugin = NULL;
 
 const int LCD_WIDTH = 160;
@@ -155,7 +143,7 @@ void CMQ2G15::callg15Command(PSPAWNINFO pChar, PCHAR szLine)
 
 void CMQ2G15::loadPages()
 {
-	string configFile = string(gszINIPath) + "\\MQ2G15Config.xml";
+	string configFile = string(gPathConfig) + "\\MQ2G15Config.xml";
 
 	m_pageManager->ClearPages();
 
@@ -217,21 +205,6 @@ void CMQ2G15::onEndZone()
 	}
 }
 
-bool FindPlugin(PCHAR PluginName)
-{
-	PMQPLUGIN pPlugin = pPlugins;
-	while (pPlugin)
-	{
-		char szTemp[MAX_STRING];
-		strcpy_s(szTemp, pPlugin->szFilename);
-
-		if (!_stricmp(szTemp, PluginName))
-			return true;
-		pPlugin = pPlugin->pNext;
-	}
-	return false;
-}
-
 PLUGIN_API void InitializePlugin()
 {
 	if (!MMOAllowedPlugin(mqplugin::ghPluginModule, PLUGIN_NAME))
@@ -243,14 +216,14 @@ PLUGIN_API void InitializePlugin()
 	}
 
 	DebugSpewAlways("Initializing " PLUGIN_MODE);
-	if (!FindPlugin(PLUGIN_OPPOSITE))
+	if (!GetPlugin(PLUGIN_OPPOSITE))
 	{
 		g_plugin = new CMQ2G15();
 	}
 	else
 	{
 		WriteChatf("Couldn't load " PLUGIN_MODE ". " PLUGIN_OPPOSITE " is currently loaded. To load this plugin, please unload " PLUGIN_OPPOSITE " first.");
-		DoCommand((GetCharInfo() && GetCharInfo()->pSpawn) ? GetCharInfo()->pSpawn : NULL, "/plugin " PLUGIN_MODE " unload");
+		DoCommand(pLocalPlayer, "/plugin " PLUGIN_MODE " unload");
 		g_plugin = NULL;
 	}
 }

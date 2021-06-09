@@ -6,9 +6,11 @@
 #include "MQ2G15PagesMono.h"
 #include "MQ2G15Bitmap.h"
 
-
-// Handle for our bitmap resources
-extern HINSTANCE ghModuleInstance;
+namespace mqplugin {
+	// Handle for our bitmap resources
+	extern HINSTANCE ghPluginModule;
+}
+using namespace mqplugin;
 
 // ----------------------------------------------------------------------------
 // helper functions
@@ -142,49 +144,49 @@ void SetLCDObjectText(CLCDBase* pObj, const char* text)
 void CStaticDemoState::Init()
 {
 	// create combat state bitmaps
-	m_hHourGlass = (HBITMAP)LoadBitmap((HINSTANCE)ghModuleInstance, MAKEINTRESOURCE(IDB_HOURGLASS));
+	m_hHourGlass = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_HOURGLASS));
 	m_bmpHourGlass = new CLCDBitmap();
 	m_bmpHourGlass->SetSize(15, 15);
 	m_bmpHourGlass->SetBitmap(m_hHourGlass);
 	m_bmpHourGlass->Show(false);
 	AddObject(m_bmpHourGlass);
 
-	m_hOoc = (HBITMAP)LoadBitmap((HINSTANCE)ghModuleInstance, MAKEINTRESOURCE(IDB_OOC));
+	m_hOoc = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_OOC));
 	m_bmpOoc = new CLCDBitmap();
 	m_bmpOoc->SetSize(15, 15);
 	m_bmpOoc->SetBitmap(m_hOoc);
 	m_bmpOoc->Show(false);
 	AddObject(m_bmpOoc);
 
-	m_hResting = (HBITMAP)LoadBitmap((HINSTANCE)ghModuleInstance, MAKEINTRESOURCE(IDB_RESTING));
+	m_hResting = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_RESTING));
 	m_bmpResting = new CLCDBitmap();
 	m_bmpResting->SetSize(15, 15);
 	m_bmpResting->SetBitmap(m_hResting);
 	m_bmpResting->Show(false);
 	AddObject(m_bmpResting);
 
-	m_hSwords = (HBITMAP)LoadBitmap((HINSTANCE)ghModuleInstance, MAKEINTRESOURCE(IDB_SWORDS));
+	m_hSwords = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_SWORDS));
 	m_bmpSwords = new CLCDBitmap();
 	m_bmpSwords->SetSize(15, 15);
 	m_bmpSwords->SetBitmap(m_hSwords);
 	m_bmpSwords->Show(false);
 	AddObject(m_bmpSwords);
 
-	m_hWaterDrop = (HBITMAP)LoadBitmap((HINSTANCE)ghModuleInstance, MAKEINTRESOURCE(IDB_WATERDROP));
+	m_hWaterDrop = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_WATERDROP));
 	m_bmpWaterDrop = new CLCDBitmap();
 	m_bmpWaterDrop->SetSize(15, 15);
 	m_bmpWaterDrop->SetBitmap(m_hWaterDrop);
 	m_bmpWaterDrop->Show(false);
 	AddObject(m_bmpWaterDrop);
 
-	//m_hPlaceHolder = (HBITMAP)LoadBitmap((HINSTANCE)ghModuleInstance, MAKEINTRESOURCE(IDB_PLACEHOLDER));
+	//m_hPlaceHolder = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_PLACEHOLDER));
 	//m_bmpPlaceHolder = new CLCDBitmap();
 	//m_bmpPlaceHolder->SetOrigin(102, 0);
 	//m_bmpPlaceHolder->SetSize(58, 43);
 	//m_bmpPlaceHolder->SetBitmap(m_hPlaceHolder);
 	//AddObject(m_bmpPlaceHolder);
 
-	m_hCompass = (HBITMAP)LoadBitmap((HINSTANCE)ghModuleInstance, MAKEINTRESOURCE(IDB_COMPASS));
+	m_hCompass = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_COMPASS));
 	m_bmpCompass = new CLCDBitmap();
 	m_bmpCompass->SetOrigin(122, 2);
 	m_bmpCompass->SetSize(20, 20);
@@ -195,7 +197,7 @@ void CStaticDemoState::Init()
 	m_name = new CLCDFont();
 	m_name->SetOrigin(16, 0);
 	m_name->SetFontSize(Font_8x8);
-	m_name->SetText(GetCharInfo()->Name);
+	m_name->SetText(pLocalPC->Name);
 	AddObject(m_name);
 
 	m_statusText = new CLCDFont();
@@ -309,10 +311,10 @@ CStaticDemoState::~CStaticDemoState()
 
 void CStaticDemoState::Update()
 {
-	PCHARINFO pChar = GetCharInfo();
+	PCHARINFO pChar = pLocalPC;
 	ASSERT(pChar != NULL);
 	
-	PSPAWNINFO pSpawn = GetCharInfo()->pSpawn;
+	PSPAWNINFO pSpawn = pLocalPC->pSpawn;
 	ASSERT(pSpawn != NULL);
 
 	char buffer[256];
@@ -342,9 +344,8 @@ void CStaticDemoState::Update()
 	}
 
 	int combatstate = -1;
-	PCPLAYERWND pWnd = (PCPLAYERWND)pPlayerWnd;
-	if (pWnd != NULL)
-		combatstate = pWnd->CombatState;
+	if (pPlayerWnd != NULL)
+		combatstate = pPlayerWnd->CombatState;
 
 	switch (combatstate)
 	{
@@ -410,11 +411,11 @@ void CStaticDemoState::Update()
 	if (GetMaxMana() != 0)
 	{
 		// update mp meter
-		percent = (float)GetCharInfo2()->Mana / (float)GetMaxMana() * 100.0f;
+		percent = (float)GetPcProfile()->Mana / (float)GetMaxMana() * 100.0f;
 		m_mpMeter->SetPos(percent);
 
-		//sprintf_s(buffer, 256, "%i/%i", GetCharInfo2()->Mana, GetMaxMana());
-		sprintf_s(buffer, 256, "%5i", GetCharInfo2()->Mana);
+		//sprintf_s(buffer, 256, "%i/%i", GetPcProfile()->Mana, GetMaxMana());
+		sprintf_s(buffer, 256, "%5i", GetPcProfile()->Mana);
 		m_mpText->SetText(buffer);
 
 		sprintf_s(buffer, 256, "%3i%%", (int)percent);
@@ -422,31 +423,30 @@ void CStaticDemoState::Update()
 	}
 
 	// update ep meter
-	percent = (float)GetCharInfo2()->Endurance / (float)GetMaxEndurance() * 100.0f;
+	percent = (float)GetPcProfile()->Endurance / (float)GetMaxEndurance() * 100.0f;
 	m_epMeter->SetPos(percent);
 
-	//sprintf_s(buffer, 256, "%i/%i",GetCharInfo2()->Endurance, GetMaxEndurance());
-	sprintf_s(buffer, 256, "%5i", GetCharInfo2()->Endurance);
+	//sprintf_s(buffer, 256, "%i/%i",GetPcProfile()->Endurance, GetMaxEndurance());
+	sprintf_s(buffer, 256, "%5i", GetPcProfile()->Endurance);
 	m_epText->SetText(buffer);
 
 	sprintf_s(buffer, 256, "%3i%%", (int)percent);
 	m_epPct->SetText(buffer);
 
 	// update xp bottom bar text
-	sprintf_s(buffer, 256, "%6.02f%% %3.0f%% AA:%4i", (float)GetCharInfo()->Exp / 3.30f,
-		(float)GetCharInfo()->AAExp / 3.30f, GetCharInfo2()->AAPointsSpent + GetCharInfo2()->AAPoints);
+	sprintf_s(buffer, 256, "%6.02f%% %3.0f%% AA:%4i", (float)pLocalPC->Exp / 3.30f,
+		(float)pLocalPC->AAExp / 3.30f, GetPcProfile()->AAPointsSpent + GetPcProfile()->AAPoints);
 	m_xpText->SetText(buffer);
 
 	// status text:
 	if (InHoverState())
 	{
-		int timer = 300 - ((((PCDISPLAY)pDisplay)->TimeStamp - GetCharInfo()->pSpawn->RespawnTimer) / 1000);
-		
+		int timer = 300 - (pDisplay->TimeStamp - pLocalPlayer->RespawnTimer) / 1000;
+
 		if (timer > 60)
 		{
 			sprintf_s(buffer, 256, "Rez:%1im%2is", timer / 60, timer % 60);
-		} else 
-		{
+		} else {
 			sprintf_s(buffer, 256, "Rez:  %2is", timer);
 		}
 		m_statusText->SetText(buffer);
@@ -479,7 +479,7 @@ void CStaticDemoState::Activate()
 
 	// update the character's name when this page is activated. If this isn't enough the user
 	// can just switch away and back and it should be updated.
-	m_name->SetText(GetCharInfo()->Name);
+	m_name->SetText(pLocalPC->Name);
 }
 
 string CStaticDemoState::GetName()

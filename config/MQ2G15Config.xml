@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config>
+	<PageLayout Name="Demo1">
+		<Element Type="Text">
+			<Position>
+				<X>50</X>
+				<Y>0</Y>
+			</Position>
+			<Text>This is page 1</Text>
+			<Align>Right</Align>
+			<Length>80</Length>
+			<Scrolling>False</Scrolling>
+		</Element>
+		<Element Type="Gauge">
+			<Position>
+				<X>0</X>
+				<Y>12</Y>
+			</Position>
+			<Size>
+				<Width>100</Width>
+				<Height>5</Height>
+			</Size>
+			<Value>${Me.PctHPs}</Value>
+			<Style>Filled</Style>
+		</Element>
+	</PageLayout>
+	<PageLayout Name="Demo2">
+		<Element Type="Text">
+			<Position>
+				<X>0</X>
+				<Y>0</Y>
+			</Position>
+			<Text>This is page 2</Text>
+			<Align>Left</Align>
+			<Length>80</Length>
+			<Scrolling>False</Scrolling>
+		</Element>
+	</PageLayout>
+	<PageLayout Name="Demo3">
+		<Element Type="Text">
+			<Position>
+				<X>0</X>
+				<Y>0</Y>
+			</Position>
+			<Text>This is page 3</Text>
+			<Align>Left</Align>
+			<Length>80</Length>
+			<Scrolling>False</Scrolling>
+		</Element>
+		<Element Type="Text">
+			<Position>
+				<X>0</X>
+				<Y>10</Y>
+			</Position>
+			<Text>${Time}</Text>
+			<Align>Left</Align>
+			<Length>80</Length>
+			<Dynamic>True</Dynamic>
+			<Scrolling>False</Scrolling>
+		</Element>
+	</PageLayout> 	
+</Config>

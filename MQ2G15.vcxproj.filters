@@ -262,7 +262,7 @@
     <None Include="mq2.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\debug\MQ2G15Config.xml">
+    <None Include="config\MQ2G15Config.xml">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="octopus.bmp">

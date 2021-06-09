@@ -63,7 +63,7 @@ class CLCDLine;
 // all header files
 //************************************************************************
 
-#include <lglcd.h>
+#include "../LCDSDK/lglcd.h"
 #include "LCDBase.h"
 #include "LCDCollection.h"
 #include "LCDPage.h"

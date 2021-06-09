@@ -6,6 +6,8 @@
 #include "MQ2G15PagesMono.h"
 #include "MQ2G15PagesColor.h"
 
+#include <filesystem>
+
 // ----------------------------------------------------------------------------
 
 CMQ2G15PageManager::CMQ2G15PageManager(string title)
@@ -395,14 +397,21 @@ void CMQ2G15PageManager::Screenshot(string filename)
 
 		sprintf_s(buffer, 256, "MQ2G15 %i-%02i-%02i %02i-%02i-%02i.bmp", newTime.tm_year + 1900,
 			newTime.tm_mon, newTime.tm_mday, newTime.tm_hour, newTime.tm_min, newTime.tm_sec);
-		
+
 		filename = buffer;
 	}
 
 	if (filename.rfind(".bmp") != filename.length() - 4)
 		filename += ".bmp";
 
-	string full_filename = gszINIPath + string("\\") + filename;
+	std::string dirname = gPathMQRoot + string("\\Screenshots");
+	string full_filename = dirname + string("\\") + filename;
+
+	std::error_code ec;
+	if (!std::filesystem::exists(dirname, ec))
+	{
+		std::filesystem::create_directories(dirname, ec);
+	}
 
 	// Ok, so now we have a filename to save as, all that is left to do before we begin
 	// is update the canvas so that our screenshot is up to date
