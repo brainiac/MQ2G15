@@ -1,29 +1,31 @@
 
-#include "stdafx.h"
+#include "pch.h"
 
 #include "MQ2G15.h"
 #include "MQ2G15Config.h"
 #include "MQ2G15PagesMono.h"
 #include "MQ2G15Bitmap.h"
 
+#include "resource.h"
+
 namespace mqplugin {
 	// Handle for our bitmap resources
 	extern HINSTANCE ghPluginModule;
 }
-using namespace mqplugin;
+using mqplugin::ghPluginModule;
 
 // ----------------------------------------------------------------------------
 // helper functions
-CLCDBase* CreateText(LGObjectType type, LGTextSize size, INT alignment, INT maxLengthPixels)
+static CLCDBase* CreateText(LGObjectType type, LGTextSize size, int alignment, int maxLengthPixels)
 {
 	ASSERT(LG_SCROLLING_TEXT == type || LG_STATIC_TEXT == type);
 
 	CLCDText* staticText;
 	CLCDStreamingText* streamingText;
 
-	INT boxHeight = LG_MEDIUM_FONT_TEXT_BOX_HEIGHT;
-	INT fontSize = LG_MEDIUM_FONT_SIZE;
-	INT localOriginY = LG_MEDIUM_FONT_LOGICAL_ORIGIN_Y;
+	int boxHeight = LG_MEDIUM_FONT_TEXT_BOX_HEIGHT;
+	int fontSize = LG_MEDIUM_FONT_SIZE;
+	int localOriginY = LG_MEDIUM_FONT_LOGICAL_ORIGIN_Y;
 
 	switch (type)
 	{
@@ -96,8 +98,11 @@ CLCDBase* CreateText(LGObjectType type, LGTextSize size, INT alignment, INT maxL
 		staticText->SetLogicalOrigin(0, localOriginY);
 
 		return staticText;
+
+	default: break;
 	}
-	return NULL;
+
+	return nullptr;
 }
 
 CLCDProgressBar* CreateProgressBar(LGProgressBarType type)
@@ -143,50 +148,45 @@ void SetLCDObjectText(CLCDBase* pObj, const char* text)
 #pragma region CStaticDemoState class
 void CStaticDemoState::Init()
 {
+	SetName("Default");
+
 	// create combat state bitmaps
-	m_hHourGlass = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_HOURGLASS));
+	m_hHourGlass = LoadBitmap(ghPluginModule, MAKEINTRESOURCE(IDB_HOURGLASS));
 	m_bmpHourGlass = new CLCDBitmap();
 	m_bmpHourGlass->SetSize(15, 15);
 	m_bmpHourGlass->SetBitmap(m_hHourGlass);
 	m_bmpHourGlass->Show(false);
 	AddObject(m_bmpHourGlass);
 
-	m_hOoc = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_OOC));
+	m_hOoc = LoadBitmap(ghPluginModule, MAKEINTRESOURCE(IDB_OOC));
 	m_bmpOoc = new CLCDBitmap();
 	m_bmpOoc->SetSize(15, 15);
 	m_bmpOoc->SetBitmap(m_hOoc);
 	m_bmpOoc->Show(false);
 	AddObject(m_bmpOoc);
 
-	m_hResting = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_RESTING));
+	m_hResting = LoadBitmap(ghPluginModule, MAKEINTRESOURCE(IDB_RESTING));
 	m_bmpResting = new CLCDBitmap();
 	m_bmpResting->SetSize(15, 15);
 	m_bmpResting->SetBitmap(m_hResting);
 	m_bmpResting->Show(false);
 	AddObject(m_bmpResting);
 
-	m_hSwords = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_SWORDS));
+	m_hSwords = LoadBitmap(ghPluginModule, MAKEINTRESOURCE(IDB_SWORDS));
 	m_bmpSwords = new CLCDBitmap();
 	m_bmpSwords->SetSize(15, 15);
 	m_bmpSwords->SetBitmap(m_hSwords);
 	m_bmpSwords->Show(false);
 	AddObject(m_bmpSwords);
 
-	m_hWaterDrop = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_WATERDROP));
+	m_hWaterDrop = LoadBitmap(ghPluginModule, MAKEINTRESOURCE(IDB_WATERDROP));
 	m_bmpWaterDrop = new CLCDBitmap();
 	m_bmpWaterDrop->SetSize(15, 15);
 	m_bmpWaterDrop->SetBitmap(m_hWaterDrop);
 	m_bmpWaterDrop->Show(false);
 	AddObject(m_bmpWaterDrop);
 
-	//m_hPlaceHolder = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_PLACEHOLDER));
-	//m_bmpPlaceHolder = new CLCDBitmap();
-	//m_bmpPlaceHolder->SetOrigin(102, 0);
-	//m_bmpPlaceHolder->SetSize(58, 43);
-	//m_bmpPlaceHolder->SetBitmap(m_hPlaceHolder);
-	//AddObject(m_bmpPlaceHolder);
-
-	m_hCompass = (HBITMAP)LoadBitmap((HINSTANCE)ghPluginModule, MAKEINTRESOURCE(IDB_COMPASS));
+	m_hCompass = LoadBitmap(ghPluginModule, MAKEINTRESOURCE(IDB_COMPASS));
 	m_bmpCompass = new CLCDBitmap();
 	m_bmpCompass->SetOrigin(122, 2);
 	m_bmpCompass->SetSize(20, 20);
@@ -194,11 +194,11 @@ void CStaticDemoState::Init()
 	AddObject(m_bmpCompass);
 
 	// create name
-	m_name = new CLCDFont();
-	m_name->SetOrigin(16, 0);
-	m_name->SetFontSize(Font_8x8);
-	m_name->SetText(pLocalPC->Name);
-	AddObject(m_name);
+	m_nameLabel = new CLCDFont();
+	m_nameLabel->SetOrigin(16, 0);
+	m_nameLabel->SetFontSize(Font_8x8);
+	m_nameLabel->SetText(pLocalPC->Name);
+	AddObject(m_nameLabel);
 
 	m_statusText = new CLCDFont();
 	m_statusText->SetOrigin(16, 8);
@@ -260,7 +260,7 @@ void CStaticDemoState::Init()
 	AddObject(m_topLine2);
 
 	// positioning
-	const int baseline = 36;
+	constexpr int baseline = 36;
 
 	// experience stuff
 	m_bottomBar = new CLCDRectangle();
@@ -276,34 +276,28 @@ void CStaticDemoState::Init()
 }
 
 CStaticDemoState::CStaticDemoState()
-: CPageState()
 {
-	m_hHourGlass = 0;
-	m_hOoc = 0;
-	m_hResting = 0;
-	m_hSwords = 0;
-	m_hWaterDrop = 0;
 }
 
 CStaticDemoState::~CStaticDemoState()
 {
-	if (m_hHourGlass != 0)
+	if (m_hHourGlass != nullptr)
 	{
 		DeleteObject(m_hHourGlass);
 	}
-	if (m_hOoc != 0)
+	if (m_hOoc != nullptr)
 	{
 		DeleteObject(m_hOoc);
 	}
-	if (m_hResting != 0)
+	if (m_hResting != nullptr)
 	{
 		DeleteObject(m_hResting);
 	}
-	if (m_hSwords != 0)
+	if (m_hSwords != nullptr)
 	{
 		DeleteObject(m_hSwords);
 	}
-	if (m_hWaterDrop != 0)
+	if (m_hWaterDrop != nullptr)
 	{
 		DeleteObject(m_hWaterDrop);
 	}
@@ -392,7 +386,7 @@ void CStaticDemoState::Update()
 		}
 		else
 		{
-			sprintf_s(buffer, 256, "%5I64d", pSpawn->HPCurrent);
+			sprintf_s(buffer, 256, "%5I64d", static_cast<int64_t>(pSpawn->HPCurrent));
 			m_hpPct->SetText(" UNC");
 		}
 		m_hpText->SetText(buffer);
@@ -401,7 +395,7 @@ void CStaticDemoState::Update()
 	else
 	{
 		//sprintf_s(buffer, 256, "%i/%i", pSpawn->HPCurrent, pSpawn->HPMax);
-		sprintf_s(buffer, 256, "%5I64d", pSpawn->HPCurrent);
+		sprintf_s(buffer, 256, "%5I64d", static_cast<int64_t>(pSpawn->HPCurrent));
 		m_hpText->SetText(buffer);
 		sprintf_s(buffer, 256, "%3i%%", (int)percent);
 		m_hpPct->SetText(buffer);
@@ -479,106 +473,97 @@ void CStaticDemoState::Activate()
 
 	// update the character's name when this page is activated. If this isn't enough the user
 	// can just switch away and back and it should be updated.
-	m_name->SetText(pLocalPC->Name);
+	m_nameLabel->SetText(pLocalPC->Name);
 }
 
-string CStaticDemoState::GetName()
-{
-	return "Default"; 
-}
 #pragma endregion
+
 // ----------------------------------------------------------------------------
+
 #pragma region CXmlState class
+
 struct XmlPageElement
 {
-	XmlBase*	base;
-	CLCDBase*	object;
-	bool		dynamic;
+	XmlBase*    base = nullptr;
+	CLCDBase*   object = nullptr;
+	bool        dynamic = false;
 };
 
-CXmlState::CXmlState(XmlPageLayout *layout)
-	: CPageState()
+CXmlState::CXmlState(XmlPageLayout* layout)
+	: m_layout(layout)
 {
-	m_layout = layout;
 }
 
 CXmlState::~CXmlState()
 {
-
 }
 
 void CXmlState::Init()
 {
 	// initialize the objects in this xml page
-	for (int i = 0; i < m_layout->numElements(); i++)
+	for (uint32_t i = 0; i < m_layout->numElements(); i++)
 	{
 		XmlBase* e = m_layout->getElement(i);
 		ASSERT(e != NULL);
 
 		// create local representation
-		XmlPageElement* elem = new XmlPageElement;
+		XmlPageElement* elem = new XmlPageElement();
 		elem->base = e;
 		
 		// now create the handle
 		switch (e->getType())
 		{
-			case Type_StaticText:
+		case Type_StaticText:
+			{
+				XmlText* text = static_cast<XmlText*>(e);
+
+				// create element
+				CLCDBase* newText = CreateText(
+					text->isScrolling() ? LG_SCROLLING_TEXT : LG_STATIC_TEXT,
+					static_cast<LGTextSize>(text->getFontSize()),
+					text->getAlign(),
+					text->getLength());
+				newText->SetOrigin(text->getPos().getX(), text->getPos().getY());
+
+				if (newText->GetObjectType() == LG_SCROLLING_TEXT)
 				{
-					XmlText* text = static_cast<XmlText*>(e);
-
-					// create element
-					CLCDBase* newText = CreateText(
-						text->isScrolling() ? LG_SCROLLING_TEXT : LG_STATIC_TEXT,
-						(LGTextSize)text->getFontSize(),
-						text->getAlign(),
-						text->getLength());
-					newText->SetOrigin(text->getPos().getX(), text->getPos().getY());
-
-					if (newText->GetObjectType() == LG_SCROLLING_TEXT)
-					{
-						CLCDStreamingText* pText = dynamic_cast<CLCDStreamingText*>(newText);
-						ASSERT(pText != NULL);
-
-						pText->SetText(text->getText().c_str());
-					}
-					else if (newText->GetObjectType() == LG_STATIC_TEXT)
-					{
-						CLCDText* pText = dynamic_cast<CLCDText*>(newText);
-						ASSERT(pText != NULL);
-
-						pText->SetText(text->getText().c_str());
-					}
-
-					elem->dynamic = text->isDynamic();
-					elem->object = newText;
-
-					// add element to page
-					AddObject(elem->object);
+					CLCDStreamingText* pText = static_cast<CLCDStreamingText*>(newText);
+					pText->SetText(text->getText().c_str());
 				}
-				break;
-
-			case Type_ProgressBar:
+				else if (newText->GetObjectType() == LG_STATIC_TEXT)
 				{
-					XmlProgressBar* bar = static_cast<XmlProgressBar*>(e);
+					CLCDText* pText = static_cast<CLCDText*>(newText);
+					pText->SetText(text->getText().c_str());
+				}
 
-					// create element
-					CLCDProgressBar* newBar = CreateProgressBar((LGProgressBarType)bar->getStyle());
-					newBar->SetOrigin(bar->getPos().getX(), bar->getPos().getY());
-					newBar->SetSize(bar->getSize().getWidth(), bar->getSize().getHeight());
-					newBar->SetPos(100);
+				elem->dynamic = text->isDynamic();
+				elem->object = newText;
 
-					elem->dynamic = true;
-					elem->object = newBar;
+				// add element to page
+				AddObject(elem->object);
+			}
+			break;
+
+		case Type_ProgressBar:
+			{
+				XmlProgressBar* bar = static_cast<XmlProgressBar*>(e);
+
+				// create element
+				CLCDProgressBar* newBar = CreateProgressBar(static_cast<LGProgressBarType>(bar->getStyle()));
+				newBar->SetOrigin(bar->getPos().getX(), bar->getPos().getY());
+				newBar->SetSize(bar->getSize().getWidth(), bar->getSize().getHeight());
+				newBar->SetPos(100);
+
+				elem->dynamic = true;
+				elem->object = newBar;
 					
-					// add element to page
-					AddObject(newBar);
-				}
-				break;
-
-			default:
-				ASSERT(false);
+				// add element to page
+				AddObject(newBar);
+			}
+			break;
 		}
-		m_elemdata.push_back(elem);
+
+		m_elemData.push_back(elem);
 	}
 }
 
@@ -587,21 +572,18 @@ void CXmlState::Update()
 	char buffer[MAX_STRING];
 
 	// loop through elements, updating those that are necessary
-	vector<XmlPageElement*>::const_iterator it = m_elemdata.begin();
-	while (it != m_elemdata.end())
+	for (XmlPageElement* element : m_elemData)
 	{
-		if ((*it)->dynamic)
+		if (element->dynamic)
 		{
-			XmlPageElement* element = *it;
-
 			switch (element->base->getType())
 			{
 			case Type_StaticText:
 				{
-					XmlText* text = (XmlText*)element->base;
+					XmlText* text = static_cast<XmlText*>(element->base);
 
 					strcpy_s(buffer, text->getText().c_str());
-					ParseMacroParameter(NULL, buffer);		
+					ParseMacroParameter(buffer);
 
 					SetLCDObjectText(element->object, buffer);
 					break;
@@ -609,53 +591,27 @@ void CXmlState::Update()
 
 			case Type_ProgressBar:
 				{
-					XmlProgressBar* bar = (XmlProgressBar*)element->base;
+					XmlProgressBar* bar = static_cast<XmlProgressBar*>(element->base);
 
 					strcpy_s(buffer, bar->getValue().c_str());
-					ParseMacroParameter(NULL, buffer);
+					ParseMacroParameter(buffer);
 
-					CLCDProgressBar* pBar = dynamic_cast<CLCDProgressBar*>(element->object);
-					ASSERT(pBar != NULL);
-
-					pBar->SetPos((float)atof(buffer));
+					CLCDProgressBar* pBar = static_cast<CLCDProgressBar*>(element->object);
+					pBar->SetPos(static_cast<float>(atof(buffer)));
 					break;
 				}
-
-			default:
-				ASSERT(false);
 			}
 		}
-		++it;
 	}
 }
 
-string CXmlState::GetName()
+const std::string& CXmlState::GetName() const
 {
 	ASSERT(m_layout != NULL);
-	string name = m_layout->getName();
-
-	ASSERT(name != "");
-	return name;
+	return m_layout->getName();
 }
+
 #pragma endregion
-// ----------------------------------------------------------------------------
-
-void CRestrictedState::Init()
-{
-	m_text = (CLCDStreamingText*)CreateText(LG_SCROLLING_TEXT, LG_MEDIUM, DT_LEFT, 160);
-	m_text->SetOrigin(0, 19);
-	AddObject(m_text);
-}
-
-void CRestrictedState::Update()
-{
-	m_text->SetText("Lifetime Subscription Required");
-}
-
-string CRestrictedState::GetName()
-{
-	return "Default";
-}
 
 // ----------------------------------------------------------------------------
 
@@ -666,16 +622,13 @@ void CTestState::Init()
 	m_test->SetOrigin(0, 0);
 	m_test->SetObjectType(LG_FONT);
 
+	SetName("Development Testing");
 	AddObject(m_test);
 }
 
 void CTestState::Update()
 {
 	m_test->SetText("123456789abcdefghijk");
-}
-string CTestState::GetName()
-{
-	return "Development Testing";
 }
 
 // ----------------------------------------------------------------------------

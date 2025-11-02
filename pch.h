@@ -1,11 +1,7 @@
 #pragma once
 
-#include <mq/Plugin.h>
-
-using std::min;
-using std::max;
-
 #include <windows.h>
+#include <objidl.h>
 #include <gdiplus.h>
 
 #include <crtdbg.h>
@@ -20,11 +16,10 @@ using std::max;
 #endif
 
 #ifndef TRACE
-#define TRACE DebugSpew
+namespace mq {
+	extern "C" __declspec(dllimport) void DebugSpew(const char* szFormat, ...);
+}
+#define TRACE mq::DebugSpew
 #endif
 
-
 #include "LCDUI/LCDUI.h"
-#include "LCDSDK/lglcd.h"
-
-#include "resource.h"

@@ -1,18 +1,22 @@
 
-#include "StdAfx.h"
+#include "pch.h"
 
 #include "MQ2G15.h"
 #include "MQ2G15Config.h"
 #include "MQ2G15PagesMono.h"
 
+#include <string_view>
+
 static bool XmlToBoolean(TiXmlElement* node, bool def)
 {
-	if (node == NULL)
+	if (node == nullptr)
 		return def;
-	string boolStr = node->GetText();
+
+	std::string boolStr = node->GetText();
 	if (boolStr == "True")
 		return true;
-	else if (boolStr == "False")
+
+	if (boolStr == "False")
 		return false;
 	return def;
 }
@@ -30,18 +34,16 @@ XmlPosition::XmlPosition(TiXmlElement* node)
 
 void XmlPosition::fromXml(TiXmlElement* node)
 {
-	ASSERT(node != NULL);
+	ASSERT(node != nullptr);
 
 	// convert X coordinate
-	TiXmlElement* coordX = node->FirstChildElement("X");
-	if (coordX)
+	if (TiXmlElement* coordX = node->FirstChildElement("X"))
 	{
 		x = atoi(coordX->GetText());
 	}
 
 	// convert Y coordinate
-	TiXmlElement* coordY = node->FirstChildElement("Y");
-	if (coordY)
+	if (TiXmlElement* coordY = node->FirstChildElement("Y"))
 	{
 		y = atoi(coordY->GetText());
 	}
@@ -60,17 +62,15 @@ XmlSize::XmlSize(TiXmlElement* node)
 
 void XmlSize::fromXml(TiXmlElement* node)
 {
-	ASSERT(node != NULL);
+	ASSERT(node != nullptr);
 	
 	// convert Width tag
-	TiXmlElement* pWidth = node->FirstChildElement("Width");
-	if (pWidth != NULL)
+	if (TiXmlElement* pWidth = node->FirstChildElement("Width"))
 	{
 		width = atoi(pWidth->GetText());
 	}
 
-	TiXmlElement* pHeight = node->FirstChildElement("Height");
-	if (pHeight != NULL)
+	if (TiXmlElement* pHeight = node->FirstChildElement("Height"))
 	{
 		height = atoi(pHeight->GetText());
 	}
@@ -78,10 +78,9 @@ void XmlSize::fromXml(TiXmlElement* node)
 
 XmlBase::XmlBase(TiXmlElement* node)
 {
-	ASSERT(node != NULL);
+	ASSERT(node != nullptr);
 	
-	TiXmlElement* position = node->FirstChildElement("Position");
-	if (position != NULL)
+	if (TiXmlElement* position = node->FirstChildElement("Position"))
 	{
 		pos.fromXml(position);
 	}
@@ -90,7 +89,7 @@ XmlBase::XmlBase(TiXmlElement* node)
 XmlText::XmlText(TiXmlElement* pElement) 
 	: XmlBase(pElement)
 {
-	ASSERT(pElement != NULL);
+	ASSERT(pElement != nullptr);
 	
 	// defaults
 	align		= DT_LEFT;
@@ -100,20 +99,20 @@ XmlText::XmlText(TiXmlElement* pElement)
 	scrolling	= false;
 
 	type		= Type_StaticText;
-	TiXmlElement* pNode = NULL;
+	TiXmlElement* pNode = nullptr;
 
 	// read text tag	<Text>blah</Text>
 	pNode = pElement->FirstChildElement("Text");
-	if (pNode != NULL)
+	if (pNode != nullptr)
 	{
 		text = pNode->GetText();
 	}
 
 	// read alignment tag				<Align>Left</Align>
 	pNode = pElement->FirstChildElement("Align");
-	if (pNode != NULL)
+	if (pNode != nullptr)
 	{
-		string alignStr = pNode->GetText();
+		std::string_view alignStr = pNode->GetText();
 		if (alignStr == "Right")
 		{
 			align = DT_RIGHT;
@@ -126,9 +125,9 @@ XmlText::XmlText(TiXmlElement* pElement)
 
 	// read font size tag				<FontSize>Small</FontSize>
 	pNode = pElement->FirstChildElement("FontSize");
-	if (pNode != NULL)
+	if (pNode != nullptr)
 	{
-		string sizeStr = pNode->GetText();
+		std::string_view sizeStr = pNode->GetText();
 		if (sizeStr == "Medium")
 		{
 			fontsize = LG_MEDIUM;
@@ -141,7 +140,7 @@ XmlText::XmlText(TiXmlElement* pElement)
 
 	// read max length tag				<Length>80</Length>
 	pNode = pElement->FirstChildElement("Length");
-	if (pNode != NULL)
+	if (pNode != nullptr)
 	{
 		length = atoi(pNode->GetText());
 	}
@@ -162,30 +161,29 @@ XmlText::XmlText(TiXmlElement* pElement)
 XmlProgressBar::XmlProgressBar(TiXmlElement* pElement) 
 	: XmlBase(pElement)
 {
-	ASSERT(pElement != NULL);
+	ASSERT(pElement != nullptr);
 	
 	style		= LG_FILLED;
 	type		= Type_ProgressBar;
-	TiXmlElement* pNode = NULL;
 
 	// read size tag
-	pNode = pElement->FirstChildElement("Size");
-	if (pNode != NULL)
+	TiXmlElement* pNode = pElement->FirstChildElement("Size");
+	if (pNode != nullptr)
 	{
 		size.fromXml(pNode);
 	}
 
 	// read value tag
 	pNode = pElement->FirstChildElement("Value");
-	if (pNode != NULL)
+	if (pNode != nullptr)
 	{
 		value = pNode->GetText();
 	}
 
 	pNode = pElement->FirstChildElement("Style");
-	if (pNode != NULL)
+	if (pNode != nullptr)
 	{
-		string styleStr = pNode->GetText();
+		std::string_view styleStr = pNode->GetText();
 		if (styleStr == "Filled")
 		{
 			style = LG_FILLED;
@@ -199,75 +197,70 @@ XmlProgressBar::XmlProgressBar(TiXmlElement* pElement)
 
 XmlBase* XmlPageLayout::createElementFromXml(TiXmlElement* pElement)
 {
-	ASSERT(pElement != NULL);
+	ASSERT(pElement != nullptr);
 
-	string type = pElement->Attribute("Type");
+	std::string_view type = pElement->Attribute("Type");
 	if (type == "Text")
 	{
 		return new XmlText(pElement);
 	}
-	else if (type == "Gauge")
+
+	if (type == "Gauge")
 	{
 		return new XmlProgressBar(pElement);
 	}
-	else
-	{
-		// unrecognized type
-		return NULL;
-	}
+	
+	// unrecognized type
+	return nullptr;
 }
 
 XmlPageLayout::XmlPageLayout()
 {
-	name = "Unnamed Page";
+	m_name = "Unnamed Page";
 }
 
 XmlPageLayout::XmlPageLayout(TiXmlElement* node)
 {
-	name = "Unnamed Page";
+	m_name = "Unnamed Page";
 	fromXml(node);
 }
 
 XmlPageLayout::~XmlPageLayout()
 {
-	vector<XmlBase*>::iterator it;
-	for (it = elements.begin(); it != elements.end(); ++it)
-	{
-		delete *it;
-	}
+	DebugSpew("~XmlPageLayout %p", (void*)this);
 }
 
 void XmlPageLayout::fromXml(TiXmlElement* pLayout)
 {
-	ASSERT(pLayout != NULL);
-	ASSERT(elements.size() == 0);
+	ASSERT(pLayout != nullptr);
+	ASSERT(m_elements.empty());
 
 	const char* pageName = pLayout->Attribute("Name");		// <PageLayout Name="Default">
-	if (pageName != NULL)
+	if (pageName != nullptr)
 	{
-		name = pageName;
+		m_name = pageName;
 	}
 
-	TiXmlElement* pElement = NULL;
-	while (pElement = (TiXmlElement*)pLayout->IterateChildren("Element", pElement))
+	TiXmlElement* pElement = nullptr;
+	while ((pElement = static_cast<TiXmlElement*>(pLayout->IterateChildren("Element", pElement))))
 	{
-		XmlBase* element = createElementFromXml(pElement);
-		if (element != NULL)
+		if (XmlBase* element = createElementFromXml(pElement))
 		{
-			elements.push_back(element);
+			m_elements.push_back(element);
 		}
 	}
 }
 
-XmlBase* XmlPageLayout::getElement(int n)
+XmlBase* XmlPageLayout::getElement(uint32_t n) const
 {
-	ASSERT(n < (int)elements.size());
-	return elements[n];
+	ASSERT(n < static_cast<uint32_t>(m_elements.size()));
+	return m_elements[n];
 }
+
+//-----------------------------------------------------------------------------
 
 XmlConfig::XmlConfig()
 {
-	document = NULL;
 }
 
 XmlConfig::~XmlConfig()
@@ -275,69 +268,53 @@ XmlConfig::~XmlConfig()
 	cleanup();
 }
 
-bool XmlConfig::loadConfig(string filename)
+bool XmlConfig::loadConfig(const std::string& filename)
 {
 	// cleanup first
 	cleanup();
 
 	DebugSpew("Configuration File: %s", filename.c_str());
 
-	document = new TiXmlDocument(filename.c_str());
-	if (document->LoadFile())
+	m_document = std::make_unique<TiXmlDocument>(filename.c_str());
+	if (m_document->LoadFile())
 	{
 		DebugSpew("%s: Loaded XML File", __FUNCTION__);
-		TiXmlElement* pConfig = document->FirstChildElement("Config");
-		if (pConfig != NULL)
+		TiXmlElement* pConfig = m_document->FirstChildElement("Config");
+		if (pConfig != nullptr)
 		{
-			TiXmlElement* pLayout = NULL;
-			while (pLayout = (TiXmlElement*)pConfig->IterateChildren("PageLayout", pLayout))
+			TiXmlElement* pLayout = nullptr;
+			while ((pLayout = static_cast<TiXmlElement*>(pConfig->IterateChildren("PageLayout", pLayout))))
 			{
-				XmlPageLayout* layout = new XmlPageLayout(pLayout);
-				{
-					pages.push_back(layout);
-				}
+				m_pages.push_back(std::make_unique<XmlPageLayout>(pLayout));
 			}
 			return true;
 		}
 	}
 	else
 	{
-		if (document->Error())
+		if (m_document->Error())
 		{
-			const char* error = document->ErrorDesc();
+			const char* error = m_document->ErrorDesc();
 			if (!error)
 				error = "Unknown Error or Missing File";
-			WriteChatf("\arFailed to load XML: %s", document->ErrorDesc());
+			WriteChatf("\arFailed to load XML: %s", m_document->ErrorDesc());
 		}
 	}
 	return false;
 }
 
-XmlPageLayout* XmlConfig::getPage(int n)
+XmlPageLayout* XmlConfig::getPage(uint32_t n) const
 {
-	if (n < (int)pages.size())
+	if (n < static_cast<uint32_t>(m_pages.size()))
 	{
-		return pages[n];
+		return m_pages[n].get();
 	}
-	return NULL;
+
+	return nullptr;
 }
 
 void XmlConfig::cleanup()
 {
-	if (pages.size() > 0)
-	{
-		vector<XmlPageLayout*>::iterator it;
-		for (it = pages.begin(); it != pages.end(); ++it)
-		{
-			XmlPageLayout* page = *it;
-			delete page;
-		}
-		pages.erase(pages.begin(), pages.end());
-	}
-
-	if (document != NULL)
-	{
-		delete document;
-		document = NULL;
-	}
+	m_pages.clear();
+	m_document.reset();
 }

@@ -19,7 +19,7 @@ protected:
 	CPageState* m_screenSaver;
 	CPageState* m_nullPage;
 
-	string m_title;
+	std::string m_title;
 	bool m_initSucceeded;
 
 	CLCDConnection m_connection;
@@ -37,16 +37,16 @@ protected:
 
 public:
 
-	CMQ2G15PageManager(string title);
-	~CMQ2G15PageManager();
+	CMQ2G15PageManager(std::string title);
+	virtual ~CMQ2G15PageManager() override;
 
-	CPageState& GetFirstPage();
-	CPageState& GetCurrentPage();
-	string GetCurrentPageName();
+	CPageState& GetFirstPage() const;
+	CPageState& GetCurrentPage() const;
+	const std::string& GetCurrentPageName() const;
 
-	CPageState* GetPageByName(const string& name);
+	CPageState* GetPageByName(const std::string& name);
 
-	bool SetPageByName(const string& name);
+	bool SetPageByName(const std::string& name);
 
 	void SetPageNext();
 	void SetPagePrevious();
@@ -62,8 +62,8 @@ public:
 	bool IsLoaded() { return m_initSucceeded; }
 
 	// Resets the title shown on the lcd to a new one
-	void ResetTitle(string newTitle);
+	void ResetTitle(const std::string& newTitle);
 
 	// takes a screenshot and saves it as the given filename
-	void Screenshot(string filename);
+	void Screenshot(std::string_view screenshotName);
 };

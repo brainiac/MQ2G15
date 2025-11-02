@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LCDUI/LCDUI.h"
+#include "mq/Plugin.h"
 
 #ifdef MQ2G19_ENABLED
 #define PLUGIN_OPPOSITE "MQ2G15"
@@ -12,9 +13,6 @@
 #define PLUGIN_CMD		"/g15"
 #endif
 
-#pragma pack(push)
-#pragma pack(4)
-
 // ----------------------------------------------------------------------------
 // Forward Declarations
 class XmlConfig;
@@ -25,7 +23,7 @@ class CMQ2G15PageManager;
 
 class CMQ2G15
 {
-protected:	// data
+protected:  // data
 
 	// the xml config object
 	XmlConfig* m_config;
@@ -45,8 +43,8 @@ protected:	// data
 	bool m_zoning;
 
 	// commands
-	static void callg15Command(PSPAWNINFO pChar, PCHAR szLine);
-	void g15Command(PCHAR line);
+	static void callg15Command(PlayerClient* pChar, const char* szLine);
+	void g15Command(const char* line);
 
 private:
 	void loadPages();
@@ -54,7 +52,7 @@ private:
 public:
 	// construction / destruction
 	CMQ2G15();
-	~CMQ2G15();
+	virtual ~CMQ2G15();
 
 	// frame render callback
 	virtual void update();
@@ -66,6 +64,5 @@ public:
 	unsigned int getGameState() { return m_gameState; }
 };
 
-#pragma pack(pop)
 // ----------------------------------------------------------------------------
 //

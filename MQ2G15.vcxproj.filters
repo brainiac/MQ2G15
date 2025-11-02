@@ -15,15 +15,18 @@
       <UniqueIdentifier>{b90c7921-97bb-44a3-98c0-bb2ca9019c4e}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
     </Filter>
-    <Filter Include="Header Files\LCD SDK">
-      <UniqueIdentifier>{bfce0b4c-e1f8-406f-8b16-3de94c29948b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\TinyXML">
       <UniqueIdentifier>{92188b98-14eb-4a10-a92c-79decdb8d30a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{7a756764-923d-4c0d-889e-bb8091311af2}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Header Files\LCDUI">
+      <UniqueIdentifier>{bfce0b4c-e1f8-406f-8b16-3de94c29948b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LCDSDK">
+      <UniqueIdentifier>{db661201-f53f-48a7-a76e-94788032fe1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,7 +126,13 @@
     <ClCompile Include="TinyXmlParser.cpp">
       <Filter>Source Files\TinyXML</Filter>
     </ClCompile>
-    <ClCompile Include="StdAfx.cpp">
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LGLCD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLObjectDiagnostics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,86 +173,92 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StdAfx.h">
+    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDAnimatedBitmap.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDBase.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDBitmap.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDCollection.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDColorProgressBar.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDColorText.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDConnection.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDFont.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDGfxBase.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDGfxColor.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDGfxMono.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDIcon.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDLine.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDOutput.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDPage.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDPaginateText.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDPopup.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDProgressBar.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDRectangle.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDScrollingText.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDSkinnedProgressBar.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDStreamingText.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDText.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="LCDUI\LCDUI.h">
-      <Filter>Header Files\LCD SDK</Filter>
+      <Filter>Header Files\LCDUI</Filter>
     </ClInclude>
     <ClInclude Include="TinyStr.h">
       <Filter>Header Files\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="TinyXml.h">
       <Filter>Header Files\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDSDK\lglcd.h">
+      <Filter>Header Files\LCDSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="LCDSDK\Include\LogitechLCDLib.h">
+      <Filter>Header Files\LCDSDK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

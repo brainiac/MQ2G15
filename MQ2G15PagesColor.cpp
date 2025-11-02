@@ -1,5 +1,4 @@
-
-#include "stdafx.h"
+#include "pch.h"
 
 #include "MQ2G15.h"
 #include "MQ2G15Config.h"
@@ -31,21 +30,21 @@ CLCDMapObject::~CLCDMapObject()
 
 void CLCDMapObject::SetupRendering()
 {
-    //Let's do some 2D rendering
-    int vPort[4];
+	//Let's do some 2D rendering
+	int vPort[4];
 
-    glGetIntegerv(GL_VIEWPORT, vPort);
+	glGetIntegerv(GL_VIEWPORT, vPort);
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
 
-    glClearColor(1.0f,1.0f,1.f,1.0f);
+	glClearColor(1.0f,1.0f,1.f,1.0f);
 
-    glOrtho(0, vPort[2], 0, vPort[3], -1, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
+	glOrtho(0, vPort[2], 0, vPort[3], -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
 }
 
 void CLCDMapObject::DoRendering()
@@ -96,8 +95,8 @@ int CLCDMapObject::DrawZoneMapLayer(int layer)
 	glBegin(GL_LINES);
 
 	int count = 0;
-	PMAPLINE lines = pMapViewWnd->MapView.pLines;
-	while (lines != NULL)
+	MapViewLine* lines = pMapViewWnd->MapView.pLines;
+	while (lines != nullptr)
 	{
 		if (lines->Layer == layer)
 		{
@@ -147,7 +146,7 @@ void CLCDMapObject::DrawSpawnArrow(float x, float y, float heading, float scale)
 void CLCDMapObject::DrawCharacterPosition()
 {
 	PCHARINFO pCharInfo = GetCharInfo();
-	ASSERT(pCharInfo != NULL);
+	ASSERT(pCharInfo != nullptr);
 
 	DrawSpawnArrow(pCharInfo->pSpawn->X, pCharInfo->pSpawn->Y, pCharInfo->pSpawn->Heading, 5.0f);
 }
@@ -155,9 +154,8 @@ void CLCDMapObject::DrawCharacterPosition()
 ARGBCOLOR CLCDMapObject::GetColorFromSpawn(PSPAWNINFO pSpawn)
 {
 	ARGBCOLOR color;
-	eSpawnType type = GetSpawnType(pSpawn);
 
-	switch (type)
+	switch (GetSpawnType(pSpawn))
 	{
 	case PC:
 		color.ARGB = 0xFF00FF;
@@ -239,22 +237,17 @@ void CLCDMapObject::DrawSpawns()
 
 void CLCDMapObject::DrawTargetLine()
 {
-	if (pTarget == NULL)
+	if (pTarget == nullptr)
 		return;
 
-	PCHARINFO pChar = GetCharInfo();
-	ASSERT(pChar != NULL);
-
-	PSPAWNINFO pSpawn = (PSPAWNINFO)pTarget;
-
-	if (pChar->pSpawn == pSpawn)
+	if (pLocalPlayer == pTarget)
 		return;
 
 	glBegin(GL_LINES);
 
 	glColor3f(1.0f, 0.25f, 0.0f);
-	glVertex2f(-pChar->pSpawn->X * m_zoom, -pChar->pSpawn->Y * m_zoom);
-	glVertex2f(-pSpawn->X * m_zoom, -pSpawn->Y * m_zoom);
+	glVertex2f(-pLocalPlayer->X * m_zoom, -pLocalPlayer->Y * m_zoom);
+	glVertex2f(-pTarget->X * m_zoom, -pTarget->Y * m_zoom);
 
 	glEnd();
 
@@ -262,7 +255,7 @@ void CLCDMapObject::DrawTargetLine()
 	glBegin(GL_POINTS);
 
 	glColor3f(1.0f, .25f, 0.0f);
-	glVertex2f(-pSpawn->X * m_zoom, -pSpawn->Y * m_zoom);
+	glVertex2f(-pTarget->X * m_zoom, -pTarget->Y * m_zoom);
 
 	glEnd();
 }
@@ -270,15 +263,11 @@ void CLCDMapObject::DrawTargetLine()
 void CLCDMapObject::ZoomIn()
 {
 	m_zoom /= 0.75f;
-
-	//WriteChatf("Zoom: %.2f", m_zoom);
 }
 
 void CLCDMapObject::ZoomOut()
 {
 	m_zoom *= 0.75f;
-
-	//WriteChatf("Zoom: %.2f", m_zoom);
 }
 
 void CLCDMapObject::PanDelta(float x, float y)
@@ -291,7 +280,7 @@ void CLCDMapObject::PanDelta(float x, float y)
 
 void CColorMapDisplayState::Init()
 {
-	m_map = new CLCDMapObject();	
+	m_map = new CLCDMapObject();
 	m_map->MakeCurrent();
 	m_map->SetupRendering();
 	AddObject(m_map);
@@ -301,7 +290,7 @@ void CColorMapDisplayState::Init()
 	m_title->SetOrigin(0, 0);
 	m_title->SetSize(320,25);
 	m_title->SetFontPointSize(14);
-	m_title->SetFontColor(RGB(255, 0, 0));
+	m_title->SetFontColor(MQColor(255, 0, 0).ToRGB());
 	m_title->SetText("<MAP NAME>");
 
 	AddObject(m_title);
@@ -321,7 +310,7 @@ void CColorMapDisplayState::OnLCDButtonDown(int nButton)
 		m_map->ZoomOut();
 		break;
 
-		/* color lcd soft-buttons */
+		// color lcd soft-buttons
 	case LGLCDBUTTON_LEFT:
 		m_map->PanDelta(10.0f, 0);
 		break;
@@ -340,7 +329,7 @@ void CColorMapDisplayState::OnLCDButtonDown(int nButton)
 
 	case LGLCDBUTTON_MENU:
 	default:
-		/* do nothing */
+		// do nothing
 		break;
 	}
 }
@@ -351,7 +340,7 @@ void CColorMapDisplayState::OnLCDButtonUp(int nButton)
 
 	switch (nButton)
 	{
-		/* color lcd soft-buttons */
+		// color lcd soft-buttons
 	case LGLCDBUTTON_LEFT:
 	case LGLCDBUTTON_RIGHT:
 	case LGLCDBUTTON_UP:
@@ -360,22 +349,22 @@ void CColorMapDisplayState::OnLCDButtonUp(int nButton)
 	case LGLCDBUTTON_OK:
 	case LGLCDBUTTON_CANCEL:
 	default:
-		/* do nothing */
+		// do nothing
 		break;
 	}
 }
 
 void CColorMapDisplayState::Update()
 {
-	PCHARINFO pCharInfo = GetCharInfo();
-	if (pCharInfo == NULL)
+	if (!pLocalPC)
 		return;
-	int ZoneID=0;
-	if(GetCharInfo())
-		ZoneID=GetCharInfo()->zoneId;
-    if(ZoneID > MAX_ZONES)
-        ZoneID &= 0x7FFF;
-	if(ZoneID <=0 || ZoneID >= MAX_ZONES)
+
+	int ZoneID = 0;
+	if (GetCharInfo())
+		ZoneID = GetCharInfo()->zoneId;
+	if (ZoneID > MAX_ZONES)
+		ZoneID &= 0x7FFF;
+	if (ZoneID <= 0 || ZoneID >= MAX_ZONES)
 		return;
 
 	const char* zoneName = GetFullZone(ZoneID);
@@ -388,37 +377,27 @@ void CColorMapDisplayState::Update()
 
 // ----------------------------------------------------------------------------
 
-string CColorMapDisplayState::GetName()
-{
-	return "Map";
-}
-
 CColorMapDisplayState::CColorMapDisplayState()
 {
-	m_title = NULL;
-	m_map = NULL;
+	SetName("Map");
 }
 
 CColorMapDisplayState::~CColorMapDisplayState()
 {
-	if (m_title != NULL)
-		DeleteObject(m_title);
-	if (m_map != NULL)
-		DeleteObject(m_map);
 }
 
-void CColorMapDisplayState::HandleCommands(const char *string)
+void CColorMapDisplayState::HandleCommands(const char* string)
 {
-	CHAR szTemp[MAX_STRING];
+	char szTemp[MAX_STRING];
 	GetArg(szTemp, string, 2);
 
-	if (!_stricmp(szTemp, "spawns"))
+	if (ci_equals(szTemp, "spawns"))
 	{
 		bool showSpawns = !m_map->GetShowSpawns();
 		m_map->SetShowSpawns(showSpawns);
 		WriteChatf("MQ2G19 Map: Spawns are now %s.", showSpawns ? "visible" : "hidden");
 	}
-	else if (!_stricmp(szTemp, "targetline"))
+	else if (ci_equals(szTemp, "targetline"))
 	{
 		bool targetLine = !m_map->GetShowTargetLine();
 		m_map->SetShowTargetLine(targetLine);

@@ -1,5 +1,5 @@
 
-#include "stdafx.h"
+#include "pch.h"
 
 #include "MQ2G15.h"
 #include "MQ2G15PageManager.h"
@@ -10,9 +10,9 @@
 
 // ----------------------------------------------------------------------------
 
-CMQ2G15PageManager::CMQ2G15PageManager(string title)
+CMQ2G15PageManager::CMQ2G15PageManager(std::string title)
 {
-	m_pages = NULL;
+	m_pages = nullptr;
 
 	m_screenSaver = new CScreenSaverState();
 	m_nullPage = new CNullState();
@@ -21,7 +21,7 @@ CMQ2G15PageManager::CMQ2G15PageManager(string title)
 
 	m_initSucceeded = false;
 	m_bringToForeground = false;
-	m_title = title;
+	m_title = std::move(title);
 	m_changeTitle = false;
 
 	/* page never expires */
@@ -34,8 +34,8 @@ CMQ2G15PageManager::CMQ2G15PageManager(string title)
 	lgLcdConfigureContext lgdConfigureContext;
 
 	// further expansion of registration and configure contexts.
-	lgdConfigureContext.configCallback = NULL;
-	lgdConfigureContext.configContext = NULL;
+	lgdConfigureContext.configCallback = nullptr;
+	lgdConfigureContext.configContext = nullptr;
 
 	lgdConnectContext.appFriendlyName = m_title.c_str();
 	lgdConnectContext.isPersistent = FALSE;
@@ -49,11 +49,11 @@ CMQ2G15PageManager::CMQ2G15PageManager(string title)
 	lgdConnectContext.dwAppletCapabilitiesSupported = LGLCD_APPLET_CAP_BW;
 #endif
 
-	lgdConnectContext.dwReserved1 = NULL;
-	lgdConnectContext.onNotify.notificationCallback = NULL;
-	lgdConnectContext.onNotify.notifyContext = NULL;
+	lgdConnectContext.dwReserved1 = 0;
+	lgdConnectContext.onNotify.notificationCallback = nullptr;
+	lgdConnectContext.onNotify.notifyContext = nullptr;
 
-	if (m_connection.Initialize(lgdConnectContext, NULL) != TRUE)
+	if (m_connection.Initialize(lgdConnectContext, nullptr) != TRUE)
 	{
 		// this means the lcd sdk's lgLcdInit failed, and therefore
 		// we will not be able to ever connect to the lcd, even if
@@ -65,12 +65,12 @@ CMQ2G15PageManager::CMQ2G15PageManager(string title)
 	{
 #ifdef MQ2G19_ENABLED
 		m_output = m_connection.ColorOutput();
-		ASSERT(m_output != NULL);
+		ASSERT(m_output != nullptr);
 
 		m_output->ShowPage(this);
 #else
 		m_output = m_connection.MonoOutput();
-		ASSERT(m_output != NULL);
+		ASSERT(m_output != nullptr);
 
 		m_output->ShowPage(this);
 #endif
@@ -103,10 +103,10 @@ CMQ2G15PageManager::~CMQ2G15PageManager()
 
 	m_connection.Shutdown();
 
-	ASSERT(m_screenSaver != NULL);
+	ASSERT(m_screenSaver != nullptr);
 	delete m_screenSaver;
 
-	ASSERT(m_nullPage != NULL);
+	ASSERT(m_nullPage != nullptr);
 	delete m_nullPage;
 }
 
@@ -196,54 +196,54 @@ void CMQ2G15PageManager::OnLCDButtonUp(int nButton)
 	}
 }
 
-CPageState& CMQ2G15PageManager::GetFirstPage()
+CPageState& CMQ2G15PageManager::GetFirstPage() const
 {
-	ASSERT(m_pages != NULL);
+	ASSERT(m_pages != nullptr);
 	return *m_pages;
 }
 
-CPageState& CMQ2G15PageManager::GetCurrentPage()
+CPageState& CMQ2G15PageManager::GetCurrentPage() const
 {
 	if (m_paused)
 	{
-		ASSERT(m_screenSaver != NULL);
+		ASSERT(m_screenSaver != nullptr);
 		return *m_screenSaver;
 	}
 
-	ASSERT(m_currentPage != NULL);
+	ASSERT(m_currentPage != nullptr);
 	return *m_currentPage;
 }
 
-string CMQ2G15PageManager::GetCurrentPageName() 
+const std::string& CMQ2G15PageManager::GetCurrentPageName() const 
 {
 	return GetCurrentPage().GetName();
 }
 
-CPageState* CMQ2G15PageManager::GetPageByName(const string& name)
+CPageState* CMQ2G15PageManager::GetPageByName(const std::string& name)
 {
 	CPageState* page = m_pages;
-	while (page != NULL)
+	while (page != nullptr)
 	{
-		string pname = page->GetName();
+		std::string pname = page->GetName();
 		if (!_stricmp(name.c_str(), pname.c_str()))
 			return page;
 
 		page = page->Next();
 	}
 
-	return NULL;
+	return nullptr;
 }
 
-bool CMQ2G15PageManager::SetPageByName(const string& name)
+bool CMQ2G15PageManager::SetPageByName(const std::string& name)
 {
 	if (name != "")
 	{
 		CPageState* page = m_pages;
 		do 
 		{
-			ASSERT(page != NULL);
+			ASSERT(page != nullptr);
 
-			string pname = page->GetName();
+			std::string pname = page->GetName();
 			if (!_stricmp(name.c_str(), pname.c_str()))
 			{
 				SetActivePage(page);
@@ -293,7 +293,7 @@ void CMQ2G15PageManager::SetActivePage(CPageState* page)
 {
 	if (!m_paused)
 	{
-		ASSERT(m_currentPage != NULL);
+		ASSERT(m_currentPage != nullptr);
 		m_currentPage->Deactivate();
 		m_currentPage = page;
 		m_currentPage->Activate();
@@ -302,9 +302,9 @@ void CMQ2G15PageManager::SetActivePage(CPageState* page)
 
 void CMQ2G15PageManager::AddPage(CPageState* page)
 {
-	ASSERT(page != NULL);
+	ASSERT(page != nullptr);
 
-	if (m_pages == NULL)
+	if (m_pages == nullptr)
 	{
 		m_pages = page;
 	}
@@ -329,7 +329,7 @@ void CMQ2G15PageManager::AddPage(CPageState* page)
 
 void CMQ2G15PageManager::ClearPages()
 {
-	ASSERT(m_currentPage != NULL);
+	ASSERT(m_currentPage != nullptr);
 
 	if (!m_paused)
 	{
@@ -337,7 +337,7 @@ void CMQ2G15PageManager::ClearPages()
 	}
 	m_currentPage = m_nullPage;
 
-	if (m_pages != NULL)
+	if (m_pages != nullptr)
 	{
 		CPageState* start = m_pages;
 		do 
@@ -347,12 +347,12 @@ void CMQ2G15PageManager::ClearPages()
 
 			RemoveObject(tmp);
 
-			ASSERT(tmp != NULL);
+			ASSERT(tmp != nullptr);
 			delete tmp;
 
 		} while (start != m_pages);
 
-		m_pages = NULL;
+		m_pages = nullptr;
 	}
 
 	if (!m_paused)
@@ -374,7 +374,7 @@ void CMQ2G15PageManager::ListPages()
 	} while (start != m_pages);
 }
 
-void CMQ2G15PageManager::ResetTitle(string newtitle)
+void CMQ2G15PageManager::ResetTitle(const std::string& newtitle)
 {
 	if (m_initSucceeded)
 	{
@@ -383,10 +383,11 @@ void CMQ2G15PageManager::ResetTitle(string newtitle)
 	}
 }
 
-void CMQ2G15PageManager::Screenshot(string filename)
+void CMQ2G15PageManager::Screenshot(std::string_view screenshotName)
 {
+	std::string filename(screenshotName);
 #ifndef MQ2G19_ENABLED
-	if (filename.length() == 0)
+	if (filename.empty())
 	{
 		struct tm	newTime;
 		time_t		szClock;
@@ -404,8 +405,8 @@ void CMQ2G15PageManager::Screenshot(string filename)
 	if (filename.rfind(".bmp") != filename.length() - 4)
 		filename += ".bmp";
 
-	std::string dirname = gPathMQRoot + string("\\Screenshots");
-	string full_filename = dirname + string("\\") + filename;
+	std::string dirname = gPathMQRoot + std::string("\\Screenshots");
+	std::string full_filename = dirname + std::string("\\") + filename;
 
 	std::error_code ec;
 	if (!std::filesystem::exists(dirname, ec))
@@ -421,7 +422,7 @@ void CMQ2G15PageManager::Screenshot(string filename)
 	int bitmap_dy = 43;
 
 	// create the file
-	ofstream file(full_filename.c_str(), ios::binary);
+	std::ofstream file(full_filename.c_str(), std::ios::binary);
 	if (!file)
 	{
 		// problem creating the file

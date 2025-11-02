@@ -442,7 +442,7 @@ DWORD WINAPI lgLcdSetAsLCDForegroundApp(IN int device, IN int foregroundYesNoFla
 
 // These API calls are being deprecated. Consider using lgLcdOpenByType() and
 // device arrival/removal notifications instead.
-#pragma deprecated(lgLcdEnumerate,lgLcdEnumerateExA,lgLcdEnumerateExW,lgLcdOpen)
+//#pragma deprecated(lgLcdEnumerate,lgLcdEnumerateExA,lgLcdEnumerateExW,lgLcdOpen)
 
 
 #pragma pack(pop)

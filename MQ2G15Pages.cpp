@@ -1,10 +1,12 @@
 
-#include "stdafx.h"
+#include "pch.h"
 
 #include "MQ2G15.h"
 #include "MQ2G15Config.h"
 #include "MQ2G15Pages.h"
 #include "MQ2G15Bitmap.h"
+
+#include "resource.h"
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)
@@ -15,9 +17,10 @@ namespace mqplugin {
 	// Handle for our bitmap resources
 	extern HINSTANCE ghPluginModule;
 }
-using namespace mqplugin;
+using mqplugin::ghPluginModule;
 
 #pragma region CPageState class
+
 CPageState::CPageState()
 {
 	m_next = this;
@@ -30,11 +33,9 @@ CPageState::CPageState()
 
 CPageState::~CPageState()
 {
-	LCD_OBJECT_LIST::iterator it = m_Objects.begin();
-	while (it != m_Objects.end())
+	for (CLCDBase* pObj : m_Objects)
 	{
-		delete *it;
-		it++;
+		delete pObj;
 	}
 }
 
@@ -66,13 +67,19 @@ void CPageState::Update()
 {
 	ASSERT(m_initialized);
 }
+
 #pragma endregion
+
 // ----------------------------------------------------------------------------
+
 #pragma region CScreenSaverState
 
 static bool BitmapDataInverted = false;
+
 void CScreenSaverState::Init()
 {
+	SetName("Character Select");
+
 #ifdef MQ2G19_ENABLED
 	m_bitmap = new CLCDBitmap();
 	m_bitmap->SetOrigin(0, 0);
@@ -80,7 +87,6 @@ void CScreenSaverState::Init()
 	m_bitmap->SetObjectType(LG_BITMAP);
 
 	AddObject(m_bitmap);
-
 #else
 	// I don't feel like reproducing the header, so I'm just going to invert it 
 	// programmatically... 
@@ -105,20 +111,16 @@ void CScreenSaverState::Init()
 #endif
 }	
 
-CScreenSaverState::CScreenSaverState() :  m_bmp(0), CPageState()
+CScreenSaverState::CScreenSaverState()
 {
 }
 
 CScreenSaverState::~CScreenSaverState()
 {
-	if (m_bmp != NULL)
+	if (m_bmp != nullptr)
 	{
 		DeleteObject(m_bmp);
 	}
 }
 
-string CScreenSaverState::GetName()
-{
-	return "Character Select"; 
-}
 #pragma endregion

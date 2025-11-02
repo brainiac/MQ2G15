@@ -181,7 +181,7 @@ RANGE& CLCDProgressBar::GetRange(void)
 
 float CLCDProgressBar::SetPos(float fPos)
 {
-    return ( m_fPos = max((float)m_Range.nMin, min(fPos, (float)m_Range.nMax)) );
+    return ( m_fPos = std::max((float)m_Range.nMin, std::min(fPos, (float)m_Range.nMax)) );
 }
 
 

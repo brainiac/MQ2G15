@@ -77,9 +77,7 @@ BOOL CLCDOutput::Open(lgLcdOpenContext & OpenContext)
     //Close the old device if there is one
     Close();
 
-#pragma warning(disable : 4995)
 	DWORD res = lgLcdOpen(&OpenContext);
-#pragma warning(default : 4995)
 	if (ERROR_SUCCESS != res)
     {
         if( res == ERROR_INVALID_PARAMETER )

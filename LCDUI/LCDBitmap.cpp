@@ -26,14 +26,14 @@
 //
 //************************************************************************
 
-CLCDBitmap::CLCDBitmap(void)
+CLCDBitmap::CLCDBitmap()
 {
-    m_hBitmap = NULL;
-    m_dwROP = SRCCOPY;
-    m_fZoom = 1.0f;
-    m_bAlpha = TRUE;
+	m_hBitmap = nullptr;
+	m_dwROP = SRCCOPY;
+	m_fZoom = 1.0f;
+	m_bAlpha = TRUE;
 
-	m_pGdiPlusBitmap = NULL;
+	m_pGdiPlusBitmap = nullptr;
 
 	m_rotate = 0;
 	m_objectType = LG_BITMAP;
@@ -46,12 +46,12 @@ CLCDBitmap::CLCDBitmap(void)
 //
 //************************************************************************
 
-CLCDBitmap::~CLCDBitmap(void)
+CLCDBitmap::~CLCDBitmap()
 {
-	if (m_pGdiPlusBitmap != NULL)
+	if (m_pGdiPlusBitmap != nullptr)
 	{
 		delete m_pGdiPlusBitmap;
-		m_pGdiPlusBitmap = NULL;
+		m_pGdiPlusBitmap = nullptr;
 	}
 
 }
@@ -65,7 +65,7 @@ CLCDBitmap::~CLCDBitmap(void)
 
 void CLCDBitmap::SetBitmap(HBITMAP hBitmap)
 {
-    m_hBitmap = hBitmap;
+	m_hBitmap = hBitmap;
 }
 
 
@@ -74,9 +74,9 @@ void CLCDBitmap::SetBitmap(HBITMAP hBitmap)
 // CLCDBitmap::GetBitmap
 //
 //************************************************************************
-HBITMAP CLCDBitmap::GetBitmap(void)
+HBITMAP CLCDBitmap::GetBitmap()
 {
-    return m_hBitmap;
+	return m_hBitmap;
 }
 
 
@@ -88,7 +88,7 @@ HBITMAP CLCDBitmap::GetBitmap(void)
 
 void CLCDBitmap::SetROP(DWORD dwROP)
 {
-    m_dwROP = dwROP;
+	m_dwROP = dwROP;
 }
 
 
@@ -100,7 +100,7 @@ void CLCDBitmap::SetROP(DWORD dwROP)
 
 void CLCDBitmap::SetZoomLevel(float fzoom)
 {
-    m_fZoom = fzoom; 
+	m_fZoom = fzoom;
 }
 
 
@@ -110,9 +110,9 @@ void CLCDBitmap::SetZoomLevel(float fzoom)
 //
 //************************************************************************
 
-float CLCDBitmap::GetZoomLevel(void)
+float CLCDBitmap::GetZoomLevel()
 {
-    return m_fZoom; 
+	return m_fZoom;
 }
 
 
@@ -124,7 +124,7 @@ float CLCDBitmap::GetZoomLevel(void)
 
 void CLCDBitmap::SetAlpha(BOOL bAlpha)
 {
-    m_bAlpha = bAlpha;
+	m_bAlpha = bAlpha;
 }
 
 
@@ -137,53 +137,53 @@ void CLCDBitmap::SetAlpha(BOOL bAlpha)
 // The assumption is that the bitmap size is the size of the canvas.
 //************************************************************************
 
-void CLCDBitmap::OnDraw(CLCDGfxBase &rGfx)
+void CLCDBitmap::OnDraw(CLCDGfxBase& rGfx)
 {
-    if(m_hBitmap)
-    {
-        HDC hCompatibleDC = CreateCompatibleDC(rGfx.GetHDC());
-        HBITMAP hOldBitmap = (HBITMAP)SelectObject(hCompatibleDC, m_hBitmap);
-        
-        // If monochrome output, don't even bother with alpha blend
-        if (LGLCD_BMP_FORMAT_160x43x1 == rGfx.GetLCDScreen()->hdr.Format)
-        {
-            //BitBlt(rGfx.GetHDC(), 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, hCompatibleDC, 0, 0, m_dwROP);
+	if (m_hBitmap)
+	{
+		HDC hCompatibleDC = CreateCompatibleDC(rGfx.GetHDC());
+		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hCompatibleDC, m_hBitmap);
+
+		// If monochrome output, don't even bother with alpha blend
+		if (LGLCD_BMP_FORMAT_160x43x1 == rGfx.GetLCDScreen()->hdr.Format)
+		{
+			//BitBlt(rGfx.GetHDC(), 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, hCompatibleDC, 0, 0, m_dwROP);
 			RotateBlit(rGfx.GetHDC(), 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, hCompatibleDC, 0, 0, m_dwROP);
-        }
-        else
-        {
-            if(0.001f > fabs(1.0f - m_fZoom))
-            {
-                BOOL b = FALSE;
-                if(m_bAlpha)
-                {
-                    BLENDFUNCTION opblender = {AC_SRC_OVER, 0, 255, AC_SRC_ALPHA};
-                    b = AlphaBlend(rGfx.GetHDC(), 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, hCompatibleDC, 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, opblender);
-                }
-                else
-                {
-                    BitBlt(rGfx.GetHDC(), 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, hCompatibleDC, 0, 0, m_dwROP);
-                }
-            }
-            else
-            {
-                if(m_bAlpha)
-                {
-                    BLENDFUNCTION opblender = {AC_SRC_OVER, 0, 255, AC_SRC_ALPHA};
-                    AlphaBlend(rGfx.GetHDC(), 0, 0, (int)(m_fZoom* m_sizeLogical.cx), (int)(m_fZoom*m_sizeLogical.cy), hCompatibleDC, 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, opblender);
-                }
-                else
-                {
-                    BLENDFUNCTION opblender = {AC_SRC_OVER, 0, 255, 0};
-                    AlphaBlend(rGfx.GetHDC(), 0, 0, (int)(m_fZoom* m_sizeLogical.cx), (int)(m_fZoom*m_sizeLogical.cy), hCompatibleDC, 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, opblender);
-                }
-            }
-        }
-        
-        // restores
-        SelectObject(hCompatibleDC, hOldBitmap);
-        DeleteDC(hCompatibleDC);
-    }
+		}
+		else
+		{
+			if (0.001f > fabs(1.0f - m_fZoom))
+			{
+				BOOL b = FALSE;
+				if (m_bAlpha)
+				{
+					BLENDFUNCTION opblender = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+					b = AlphaBlend(rGfx.GetHDC(), 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, hCompatibleDC, 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, opblender);
+				}
+				else
+				{
+					BitBlt(rGfx.GetHDC(), 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, hCompatibleDC, 0, 0, m_dwROP);
+				}
+			}
+			else
+			{
+				if (m_bAlpha)
+				{
+					BLENDFUNCTION opblender = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+					AlphaBlend(rGfx.GetHDC(), 0, 0, (int)(m_fZoom * m_sizeLogical.cx), (int)(m_fZoom * m_sizeLogical.cy), hCompatibleDC, 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, opblender);
+				}
+				else
+				{
+					BLENDFUNCTION opblender = { AC_SRC_OVER, 0, 255, 0 };
+					AlphaBlend(rGfx.GetHDC(), 0, 0, (int)(m_fZoom * m_sizeLogical.cx), (int)(m_fZoom * m_sizeLogical.cy), hCompatibleDC, 0, 0, m_sizeLogical.cx, m_sizeLogical.cy, opblender);
+				}
+			}
+		}
+
+		// restores
+		SelectObject(hCompatibleDC, hOldBitmap);
+		DeleteDC(hCompatibleDC);
+	}
 }
 
 /* added by brainiac */
@@ -206,9 +206,9 @@ void CLCDBitmap::RotateBlit(HDC destDC, int x1, int y1, int x2, int y2, HDC srcD
 
 	double c = (double)w / 2.0;
 
-	for (int x = x1; x <= x2; x++) 
+	for (int x = x1; x <= x2; x++)
 	{
-		for (int y = y1; y <= y2; y++) 
+		for (int y = y1; y <= y2; y++)
 		{
 			COLORREF color = GetPixel(srcDC, x, y);
 
@@ -230,92 +230,91 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 {
 	// Clear the old bitmap
 	SetSize(0, 0);
-	if (m_pGdiPlusBitmap != NULL)
+	if (m_pGdiPlusBitmap != nullptr)
 	{
 		delete m_pGdiPlusBitmap;
-		m_pGdiPlusBitmap = NULL;
+		m_pGdiPlusBitmap = nullptr;
 	}
 
 	HRSRC hResource = FindResource(hInstance, MAKEINTRESOURCE(nResourceID), sResourceType);
-	if(NULL == hResource)
+	if (nullptr == hResource)
 	{
 		TRACE(_T("CBitmap::LoadImageFromResource(): failed to locate resource 0x%x (type: 0x%x) in instance 0x%x.\n"),
 			nResourceID, sResourceType, hInstance);
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	DWORD dwImageSize = SizeofResource(hInstance, hResource);
 	if (0 == dwImageSize)
 	{
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	const void* pResourceData = LockResource(LoadResource(hInstance, hResource));
-	if (NULL == pResourceData)
+	if (nullptr == pResourceData)
 	{
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	HGLOBAL hGlobal = GlobalAlloc(GMEM_MOVEABLE | GMEM_DISCARDABLE, dwImageSize);
-	if (NULL == hGlobal)
+	if (nullptr == hGlobal)
 	{
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	void* pBuffer = GlobalLock(hGlobal);
-	if (NULL == pBuffer)
+	if (nullptr == pBuffer)
 	{
 		GlobalFree(hGlobal);
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	CopyMemory(pBuffer, pResourceData, dwImageSize);
 
 	// CreateStreamOnHGlobal requires HGLOBAL to be GlobalAlloc, moveable, and discardable 
-	if(NULL == hGlobal)
+	if (nullptr == hGlobal)
 	{
 		TRACE(_T("cBitmap::LoadImageFromResource(): failed to load resource 0x%x (type: 0x%x) in instance 0x%x.\n"),
 			nResourceID, sResourceType, hInstance);
 		GlobalFree(hGlobal);
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	// Create an IStram from the HGLOBAL
-	IStream* pStream = NULL;
-	DWORD dwRet = S_OK;
-	dwRet = ::CreateStreamOnHGlobal(hGlobal, FALSE, &pStream);
+	IStream* pStream = nullptr;
+	DWORD dwRet = ::CreateStreamOnHGlobal(hGlobal, FALSE, &pStream);
 	if (FAILED(dwRet))
 	{
 		TRACE(_T("ERROR: CBitmap::LoadImageFromResource CreateStreamOnHGlobal returned %d\n"), dwRet);
 		GlobalFree(hGlobal);
-		return dwRet != 0;
+		return false;
 	}
 
 	// Use GDI+ to generate a bitmap
 	m_pGdiPlusBitmap = Gdiplus::Bitmap::FromStream(pStream);
-	//pStream->Release();
+	pStream->Release();
 	if (!m_pGdiPlusBitmap)
 	{
 		TRACE(_T("ERROR: CBitmap::LoadImageFromResource Gdiplus::Bitmap::FromStream failed\n"));
 		GlobalFree(hGlobal);
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	// We don;t need the global memory block anymore
 	GlobalFree(hGlobal);
-	hGlobal = NULL;
+	hGlobal = nullptr;
 
 	// Get the bitmap handle
-	HBITMAP hBitmap = NULL;
-	if (m_pGdiPlusBitmap->GetHBITMAP(RGB(0,0,0), &hBitmap) != Gdiplus::Ok)
+	HBITMAP hBitmap = nullptr;
+	if (m_pGdiPlusBitmap->GetHBITMAP(RGB(0, 0, 0), &hBitmap) != Gdiplus::Ok)
 	{
 		TRACE(_T("ERROR: CBitmap::LoadImageFromResource Gdiplus::Bitmap::GetHBITMAP failed\n"));
 		if (m_pGdiPlusBitmap)
 		{
 			delete m_pGdiPlusBitmap;
-			m_pGdiPlusBitmap = NULL;
+			m_pGdiPlusBitmap = nullptr;
 		}
-		return (bool)E_FAIL;
+		return false;
 	}
 
 	// Get the bitmap dimensions
@@ -327,7 +326,7 @@ bool CLCDBitmap::LoadFromResource(HINSTANCE hInstance, DWORD nResourceID, LPCTST
 
 	m_hBitmap = hBitmap;
 
-	return (bool)S_OK;
+	return true;
 }
 
 //** end of LCDBitmap.cpp ************************************************

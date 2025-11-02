@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 
 #include "MQ2G15.h"
 #include "MQ2G15Config.h"
@@ -13,10 +13,12 @@
 #endif
 
 PreSetup(PLUGIN_MODE)
-CMQ2G15* g_plugin = NULL;
+CMQ2G15* g_plugin = nullptr;
 
-const int LCD_WIDTH = 160;
-const int LCD_HEIGHT = 43;
+constexpr int LCD_WIDTH = 160;
+constexpr int LCD_HEIGHT = 43;
+
+//----------------------------------------------------------------------------
 
 CMQ2G15::CMQ2G15()
 {
@@ -24,16 +26,15 @@ CMQ2G15::CMQ2G15()
 	char buffer[256];
 
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR           m_gdiplusToken;
 
 	// Initialize GDI+.
-	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, nullptr);
 
 	/* set the title to the character name if we're loaded in game,
 	 * otherwise, just leave the title as the default "MQ2G15" */
-	if (GetCharInfo() != NULL && GetCharInfo()->pSpawn != NULL)
+	if (pLocalPC != nullptr && pLocalPlayer != nullptr)
 	{
-		sprintf_s(buffer, 256, PLUGIN_MODE " - %s", GetCharInfo()->Name);
+		sprintf_s(buffer, 256, PLUGIN_MODE " - %s", pLocalPC->Name);
 	}
 	else
 	{
@@ -54,7 +55,7 @@ CMQ2G15::CMQ2G15()
 	m_pageManager = new CMQ2G15PageManager(buffer);
 
 	// add our g15 command
-	AddCommand(PLUGIN_CMD, &CMQ2G15::callg15Command, 0, 1, 1);
+	AddCommand(PLUGIN_CMD, &CMQ2G15::callg15Command, false, true, true);
 
 	// load all of our pages and add them to the page manager
 	loadPages();
@@ -74,16 +75,16 @@ CMQ2G15::~CMQ2G15()
 	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 }
 
-void CMQ2G15::g15Command(PCHAR line)
+void CMQ2G15::g15Command(const char* line)
 {
 	char buffer[MAX_STRING];
 	GetArg(buffer, line, 1);
 
-	if (!_stricmp(buffer, "reload"))
+	if (ci_equals(buffer, "reload"))
 	{
 		loadPages();
 	}
-	else if (!_stricmp(buffer, "page"))
+	else if (ci_equals(buffer, "page"))
 	{
 		GetArg(buffer, line, 2);
 		if (!m_pageManager->SetPageByName(buffer))
@@ -91,19 +92,19 @@ void CMQ2G15::g15Command(PCHAR line)
 			WriteChatf("\ar" PLUGIN_MODE ": Page \"%s\" not found", buffer);
 		}
 	}
-	else if (!_stricmp(buffer, "next"))
+	else if (ci_equals(buffer, "next"))
 	{
 		m_pageManager->SetPageNext();
 	}
-	else if (!_stricmp(buffer, "prev"))
+	else if (ci_equals(buffer, "prev"))
 	{
 		m_pageManager->SetPagePrevious();
 	}
-	else if (!_stricmp(buffer, "list"))
+	else if (ci_equals(buffer, "list"))
 	{
 		m_pageManager->ListPages();
 	}
-	else if (!_stricmp(buffer, "screenshot"))
+	else if (ci_equals(buffer, "screenshot"))
 	{
 #ifdef MQ2G19_ENABLED
 		WriteChatf("Screenshot feature not available in G19 mode.");
@@ -113,7 +114,7 @@ void CMQ2G15::g15Command(PCHAR line)
 #endif
 	}
 #ifdef MQ2G19_ENABLED
-	else if (!_stricmp(buffer, "map"))
+	else if (ci_equals(buffer, "map"))
 	{
 		CPageState* page = m_pageManager->GetPageByName("Map");
 		if (page != NULL)
@@ -135,33 +136,33 @@ void CMQ2G15::g15Command(PCHAR line)
 	}
 }
 
-void CMQ2G15::callg15Command(PSPAWNINFO pChar, PCHAR szLine)
+void CMQ2G15::callg15Command(PlayerClient* pChar, const char* szLine)
 {
-	if (g_plugin != NULL)
+	if (g_plugin != nullptr)
 		g_plugin->g15Command(szLine);
 }
 
 void CMQ2G15::loadPages()
 {
-	string configFile = string(gPathConfig) + "\\MQ2G15Config.xml";
+	std::string configFile = std::string(gPathConfig) + "\\MQ2G15Config.xml";
 
 	m_pageManager->ClearPages();
 
 #ifdef MQ2G19_ENABLED
-		/* temporary, so list isn't empty: */
-		m_pageManager->AddPage(new CColorMapDisplayState());
-		m_pageManager->AddPage(new CStaticDemoState());
+	/* temporary, so list isn't empty: */
+	m_pageManager->AddPage(new CColorMapDisplayState());
+	m_pageManager->AddPage(new CStaticDemoState());
 #else
-		// load static states here
-		m_pageManager->AddPage(new CStaticDemoState());
+	// load static states here
+	m_pageManager->AddPage(new CStaticDemoState());
 
-		// load config here
-		m_config->loadConfig(configFile);
-		for (int i = 0; i < m_config->numPages(); i++)
-		{
-			XmlPageLayout* pLayout = m_config->getPage(i);
-			m_pageManager->AddPage(new CXmlState(pLayout));
-		}
+	// load config here
+	m_config->loadConfig(configFile);
+	for (uint32_t i = 0; i < m_config->numPages(); i++)
+	{
+		XmlPageLayout* pLayout = m_config->getPage(i);
+		m_pageManager->AddPage(new CXmlState(pLayout));
+	}
 #endif
 }
 
@@ -181,7 +182,7 @@ void CMQ2G15::update()
 
 			if (!paused)
 			{
-				string title = string(PLUGIN_MODE " - ") + GetCharInfo()->pSpawn->Name;
+				std::string title = std::string(PLUGIN_MODE " - ") + pLocalPlayer->Name;
 				m_pageManager->ResetTitle(title.c_str());
 			}
 		}
@@ -207,14 +208,6 @@ void CMQ2G15::onEndZone()
 
 PLUGIN_API void InitializePlugin()
 {
-	if (!MMOAllowedPlugin(mqplugin::ghPluginModule, PLUGIN_NAME))
-	{
-		char szBuffer[MAX_STRING] = {0};
-		sprintf_s(szBuffer, "/timed 10 /plugin %s unload noauto", PLUGIN_NAME);
-		EzCommand(szBuffer);
-		return;
-	}
-
 	DebugSpewAlways("Initializing " PLUGIN_MODE);
 	if (!GetPlugin(PLUGIN_OPPOSITE))
 	{
@@ -223,39 +216,39 @@ PLUGIN_API void InitializePlugin()
 	else
 	{
 		WriteChatf("Couldn't load " PLUGIN_MODE ". " PLUGIN_OPPOSITE " is currently loaded. To load this plugin, please unload " PLUGIN_OPPOSITE " first.");
-		DoCommand(pLocalPlayer, "/plugin " PLUGIN_MODE " unload");
-		g_plugin = NULL;
+		EzCommand("/plugin " PLUGIN_MODE " unload");
+		g_plugin = nullptr;
 	}
 }
 
 PLUGIN_API void ShutdownPlugin()
 {
 	DebugSpewAlways("Shutting down " PLUGIN_MODE);
-	if (g_plugin != NULL)
+	if (g_plugin != nullptr)
 		delete g_plugin;
 }
 
 PLUGIN_API void OnPulse()
 {
-	if (g_plugin != NULL)
-		g_plugin->update();	
+	if (g_plugin != nullptr)
+		g_plugin->update();
 }
 
 PLUGIN_API void OnBeginZone()
 {
-	if (g_plugin != NULL)
+	if (g_plugin != nullptr)
 		g_plugin->onBeginZone();
 
 }
 
 PLUGIN_API void OnEndZone()
 {
-	if (g_plugin != NULL)
+	if (g_plugin != nullptr)
 		g_plugin->onEndZone();
 }
 
-PLUGIN_API void SetGameState(DWORD GameState)
+PLUGIN_API void SetGameState(unsigned int GameState)
 {
-	if (g_plugin != NULL)
+	if (g_plugin != nullptr)
 		g_plugin->setGameState(GameState);
 }

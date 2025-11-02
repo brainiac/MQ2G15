@@ -26,7 +26,7 @@ class CLCDMapObject : public COGLObject
 
 public:
 	CLCDMapObject();
-	virtual ~CLCDMapObject();
+	virtual ~CLCDMapObject() override;
 
 	void DoRendering();
 	void SetupRendering();
@@ -50,15 +50,13 @@ class CColorMapDisplayState : public CPageState
 
 public:
 	CColorMapDisplayState();
-	virtual ~CColorMapDisplayState();
+	virtual ~CColorMapDisplayState() override;
 
-	virtual void Init();
-	virtual void Update();
+	virtual void Init() override;
+	virtual void Update() override;
 
-	virtual void OnLCDButtonDown(int nButton);
-	virtual void OnLCDButtonUp(int nButton);
+	virtual void OnLCDButtonDown(int nButton) override;
+	virtual void OnLCDButtonUp(int nButton) override;
 
-	virtual void HandleCommands(const char* string);
-
-	string GetName();
+	virtual void HandleCommands(const char* string) override;
 };

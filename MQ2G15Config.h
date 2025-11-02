@@ -2,7 +2,9 @@
 
 #include "TinyXml.h"
 
-using namespace std;
+#include <memory>
+#include <string>
+#include <vector>
 
 enum XmlType
 {
@@ -12,7 +14,8 @@ enum XmlType
 
 class XmlPosition
 {
-	int x, y;
+	int x = 0;
+	int y = 0;
 
 public:
 	XmlPosition(TiXmlElement* node);
@@ -20,14 +23,15 @@ public:
 
 	void fromXml(TiXmlElement* node);
 
-	int		getX()			{ return x; }
-	int		getY()			{ return y; }
+	int getX() const { return x; }
+	int getY() const { return y; }
 
 };
 
 class XmlSize
 {
-	int width, height;
+	int width = 0;
+	int height = 0;
 
 public:
 	XmlSize(TiXmlElement* node);
@@ -35,62 +39,63 @@ public:
 
 	void fromXml(TiXmlElement* node);
 
-	int		getWidth()		{ return width; }
-	int		getHeight()		{ return height; }
+	int getWidth() const { return width; }
+	int getHeight() const { return height; }
 };
 
 class XmlBase
 {
 protected:
-	XmlType type;
+	XmlType type = Type_StaticText;
 	XmlPosition pos;
 
 public:
 	XmlBase(TiXmlElement* node);
+	virtual ~XmlBase() {}
 
-	XmlPosition	getPos()	{ return pos; }
-	XmlType		getType()	{ return type; }
+	const XmlPosition& getPos() const { return pos; }
+	const XmlType& getType() const { return type; }
 };
 
 class XmlText : public XmlBase
 {
 protected:
-	string		text;
-	int			align;
-	int			fontsize;
-	int			length;
-	bool		dynamic;
-	bool		scrolling;
+	std::string text;
+	int align = 0;
+	int fontsize = 0;
+	int length = 0;
+	bool dynamic = false;
+	bool scrolling = false;
 
 public:
 	XmlText(TiXmlElement* node);
 
-	string	getText()		{ return text; }
-	int		getAlign()		{ return align; }
-	int		getFontSize()	{ return fontsize; }
-	int		getLength()		{ return length; }
-	bool	isDynamic()		{ return dynamic; }
-	bool	isScrolling()	{ return scrolling; }
+	const std::string& getText() const { return text; }
+	int getAlign() const { return align; }
+	int getFontSize() const { return fontsize; }
+	int getLength() const { return length; }
+	bool isDynamic() const { return dynamic; }
+	bool isScrolling() const { return scrolling; }
 };
 
 class XmlProgressBar : public XmlBase
 {
-	XmlSize		size;
-	string		value;
-	int			style;
-public:
+	XmlSize     size;
+	std::string value;
+	int         style = 0;
 
+public:
 	XmlProgressBar(TiXmlElement* node);
 
-	XmlSize	getSize()		{ return size; }
-	string	getValue()		{ return value; }
-	int		getStyle()		{ return style; }
+	const XmlSize& getSize() const { return size; }
+	const std::string& getValue() const { return value; }
+	int getStyle() const { return style; }
 };
 
 class XmlPageLayout
 {
-	vector<XmlBase*> elements;
-	string name;
+	std::vector<XmlBase*> m_elements;
+	std::string m_name;
 
 	XmlBase* createElementFromXml(TiXmlElement* node);
 
@@ -101,24 +106,24 @@ public:
 
 	void fromXml(TiXmlElement* node);
 
-	int numElements() { return elements.size(); }
-	XmlBase* getElement(int n);
-	string getName() { return name; }
+	uint32_t numElements() const { return static_cast<uint32_t>(m_elements.size()); }
+	XmlBase* getElement(uint32_t n) const;
+	const std::string& getName() const { return m_name; }
 };
 
 class XmlConfig
 {
-	vector<XmlPageLayout*> pages;
-	TiXmlDocument* document;
+	std::vector<std::unique_ptr<XmlPageLayout>> m_pages;
+	std::unique_ptr<TiXmlDocument> m_document;
 
 	void cleanup();
-	
+
 public:
 	XmlConfig();
 	~XmlConfig();
 
-	bool loadConfig(std::string filename);
+	bool loadConfig(const std::string& filename);
 
-	int numPages() { return pages.size(); }
-	XmlPageLayout* getPage(int n);
+	uint32_t numPages() const { return static_cast<uint32_t>(m_pages.size()); }
+	XmlPageLayout* getPage(uint32_t n) const;
 };

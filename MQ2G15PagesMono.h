@@ -10,6 +10,9 @@ class CLCDFont;
 class CLCDRectangle;
 class CLCDLine;
 
+struct XmlPageElement;
+class XmlPageLayout;
+
 // ----------------------------------------------------------------------------
 // constants
 
@@ -27,132 +30,113 @@ enum LGProgressBarType
 };
 
 // text box height for various font sizes
-const INT LG_SMALL_FONT_TEXT_BOX_HEIGHT = 12;
-const INT LG_MEDIUM_FONT_TEXT_BOX_HEIGHT = 13;
-const INT LG_BIG_FONT_TEXT_BOX_HEIGHT = 20;
+inline constexpr int LG_SMALL_FONT_TEXT_BOX_HEIGHT = 12;
+inline constexpr int LG_MEDIUM_FONT_TEXT_BOX_HEIGHT = 13;
+inline constexpr int LG_BIG_FONT_TEXT_BOX_HEIGHT = 20;
 
 // corresponding font size
-const INT LG_SMALL_FONT_SIZE = 7;
-const INT LG_MEDIUM_FONT_SIZE = 8;
-const INT LG_BIG_FONT_SIZE = 12;
+inline constexpr int LG_SMALL_FONT_SIZE = 7;
+inline constexpr int LG_MEDIUM_FONT_SIZE = 8;
+inline constexpr int LG_BIG_FONT_SIZE = 12;
 
 // logical origin Y value for various font sizes
-const INT LG_SMALL_FONT_LOGICAL_ORIGIN_Y = -3;
-const INT LG_MEDIUM_FONT_LOGICAL_ORIGIN_Y = -2;
-const INT LG_BIG_FONT_LOGICAL_ORIGIN_Y = -4;
+constexpr int LG_SMALL_FONT_LOGICAL_ORIGIN_Y = -3;
+constexpr int LG_MEDIUM_FONT_LOGICAL_ORIGIN_Y = -2;
+constexpr int LG_BIG_FONT_LOGICAL_ORIGIN_Y = -4;
 
 // Scrolling text parameters
-const INT LG_SCROLLING_SPEED = 7;
-const INT LG_SCROLLING_STEP = 7;
-const INT LG_SCROLLING_DELAY_MS = 2000;
-const TCHAR LG_SCROLLING_GAP_TEXT[] = _T("       ");
+inline constexpr int LG_SCROLLING_SPEED = 7;
+inline constexpr int LG_SCROLLING_STEP = 7;
+inline constexpr int LG_SCROLLING_DELAY_MS = 2000;
+inline constexpr TCHAR LG_SCROLLING_GAP_TEXT[] = _T("       ");
 
 // Progress bar parameters
-const INT LG_PROGRESS_BAR_RANGE_MIN = 0;
-const INT LG_PROGRESS_BAR_RANGE_MAX = 100;
-const INT LG_PROGRESS_BAR_INITIAL_HEIGHT = 5;
+inline constexpr int LG_PROGRESS_BAR_RANGE_MIN = 0;
+inline constexpr int LG_PROGRESS_BAR_RANGE_MAX = 100;
+inline constexpr int LG_PROGRESS_BAR_INITIAL_HEIGHT = 5;
 
 // Size of the LCD
-const INT LG_LCD_WIDTH = 160;
-const INT LG_LCD_HEIGHT = 43;
-
-
+inline constexpr int LG_LCD_WIDTH = 160;
+inline constexpr int LG_LCD_HEIGHT = 43;
 
 class CStaticDemoState : public CPageState
-{	
+{
 	// combat status bitmaps
-	CLCDBitmap* m_bmpHourGlass;
-	HBITMAP m_hHourGlass;
+	CLCDBitmap* m_bmpHourGlass = nullptr;
+	HBITMAP m_hHourGlass = nullptr;
 
-	CLCDBitmap* m_bmpOoc;
-	HBITMAP m_hOoc;
+	CLCDBitmap* m_bmpOoc = nullptr;
+	HBITMAP m_hOoc = nullptr;
 
-	CLCDBitmap* m_bmpResting;
-	HBITMAP m_hResting;
+	CLCDBitmap* m_bmpResting = nullptr;
+	HBITMAP m_hResting = nullptr;
 
-	CLCDBitmap* m_bmpSwords;
-	HBITMAP m_hSwords;
+	CLCDBitmap* m_bmpSwords = nullptr;
+	HBITMAP m_hSwords = nullptr;
 
-	CLCDBitmap* m_bmpWaterDrop;
-	HBITMAP m_hWaterDrop;
+	CLCDBitmap* m_bmpWaterDrop = nullptr;
+	HBITMAP m_hWaterDrop = nullptr;
 
-	CLCDBitmap* m_bmpPlaceHolder;
-	HBITMAP m_hPlaceHolder;
-
-	CLCDBitmap* m_bmpCompass;
-	HBITMAP m_hCompass;
+	CLCDBitmap* m_bmpCompass = nullptr;
+	HBITMAP m_hCompass = nullptr;
 
 	// InGame mode things
-	CLCDFont* m_name;
+	CLCDFont* m_nameLabel = nullptr;
 
-	CLCDFont* m_statusText;
+	CLCDFont* m_statusText = nullptr;
 
-	CLCDFont* m_hpText;
-	CLCDFont* m_mpText;
-	CLCDFont* m_epText;
-	CLCDProgressBar* m_hpMeter;
-	CLCDFont* m_hpPct;
-	CLCDProgressBar* m_mpMeter;
-	CLCDFont* m_mpPct;
-	CLCDProgressBar* m_epMeter;
-	CLCDFont* m_epPct;
+	CLCDFont* m_hpText = nullptr;
+	CLCDFont* m_mpText = nullptr;
+	CLCDFont* m_epText = nullptr;
+	CLCDProgressBar* m_hpMeter = nullptr;
+	CLCDFont* m_hpPct = nullptr;
+	CLCDProgressBar* m_mpMeter = nullptr;
+	CLCDFont* m_mpPct = nullptr;
+	CLCDProgressBar* m_epMeter = nullptr;
+	CLCDFont* m_epPct = nullptr;
 
-	CLCDLine* m_topLine1;
-	CLCDLine* m_topLine2;
+	CLCDLine* m_topLine1 = nullptr;
+	CLCDLine* m_topLine2 = nullptr;
 
-	CLCDRectangle* m_bottomBar;
+	CLCDRectangle* m_bottomBar = nullptr;
 
-	CLCDFont* m_xpText;
+	CLCDFont* m_xpText = nullptr;
 
 public:
-
 	CStaticDemoState();
-	virtual ~CStaticDemoState();
+	virtual ~CStaticDemoState() override;
 
-	virtual void Init();
-	virtual void Update();
-	string GetName();
+	virtual void Init() override;
+	virtual void Update() override;
 
-	virtual void Activate();
+	virtual void Activate() override;
 };
 
 class CXmlState : public CPageState
 {
-	class XmlPageLayout* m_layout;
-	vector<struct XmlPageElement*> m_elemdata;
+	XmlPageLayout* m_layout;
+	std::vector<XmlPageElement*> m_elemData;
 
 public:
-	CXmlState(class XmlPageLayout* layout);
-	virtual ~CXmlState();
+	CXmlState(XmlPageLayout* layout);
+	virtual ~CXmlState() override;
 
-	virtual void Init();
-	virtual void Update();
-	virtual string GetName();
-};
-
-class CRestrictedState : public CPageState
-{
-	CLCDStreamingText* m_text;
-
-public:
-	virtual void Init();
-	virtual string GetName();
-	virtual void Update();
+	virtual void Init() override;
+	virtual void Update() override;
+	virtual const std::string& GetName() const override;
 };
 
 class CTestState : public CPageState
 {
-	CLCDFont* m_test;
+	CLCDFont* m_test = nullptr;
 
 public:
-	virtual void Init();
-	virtual string GetName();
-	virtual void Update();
+	virtual void Init() override;
+	virtual void Update() override;
 };
 
 class CNullState : public CPageState
 {
 public:
-	virtual void Init() {}
-	virtual string GetName() { return "Null"; }
+	virtual void Init() override { SetName("Null"); }
 };

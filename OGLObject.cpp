@@ -1,5 +1,4 @@
-
-#include "stdafx.h"
+#include "pch.h"
 
 #include "LCDUI/LCDUI.h"
 #include "OGLObject.h"
@@ -46,9 +45,9 @@ BOOL COGLObject::Initialize(int width, int height)
     m_hDC = CreateCompatibleDC(NULL);
     if(NULL == m_hDC)
     {
-        LCDUITRACE(_T("COGLObject::Initialize(): failed to create compatible DC.\n"));
+      LCDUITRACE(_T("COGLObject::Initialize(): failed to create compatible DC.\n"));
         Shutdown();
-        return FALSE;
+    return FALSE;
     }
 
     int nBMISize = sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD);
@@ -68,11 +67,11 @@ BOOL COGLObject::Initialize(int width, int height)
     m_pBitmapInfo->bmiHeader.biBitCount = 32;
     m_pBitmapInfo->bmiHeader.biCompression = BI_RGB;
     m_pBitmapInfo->bmiHeader.biSizeImage = 
-        (width * 
+      (width * 
         height * 
-        m_pBitmapInfo->bmiHeader.biBitCount) / 8;
+     m_pBitmapInfo->bmiHeader.biBitCount) / 8;
     m_pBitmapInfo->bmiHeader.biXPelsPerMeter = 3200;
-    m_pBitmapInfo->bmiHeader.biYPelsPerMeter = 3200;
+  m_pBitmapInfo->bmiHeader.biYPelsPerMeter = 3200;
     m_pBitmapInfo->bmiHeader.biClrUsed = 256;
     m_pBitmapInfo->bmiHeader.biClrImportant = 256;
 
@@ -81,7 +80,7 @@ BOOL COGLObject::Initialize(int width, int height)
     {
         LCDUITRACE(_T("COGLObject::Initialize(): failed to create bitmap.\n"));
         Shutdown();
-        return FALSE;
+ return FALSE;
     }
 
     //select the newly created bitmap
@@ -112,7 +111,7 @@ BOOL COGLObject::Initialize(int width, int height)
     {
         LCDUITRACE(_T("COGLObject::Initialize(): failed to set pixel format.\n"));
         Shutdown();
-        return FALSE; 
+     return FALSE; 
     }
 
     DescribePixelFormat(m_hDC, m_GLPixelIndex, sizeof(pixelDesc), &pixelDesc);

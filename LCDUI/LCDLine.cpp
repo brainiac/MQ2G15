@@ -43,8 +43,8 @@ void CLCDLine::OnDraw(CLCDGfxBase &rGfx)
 
 void CLCDLine::SetLine(int x1, int y1, int x2, int y2)
 {
-	SetOrigin(min(x1, x2), min(y1, y2));
-	SetSize(max(x1, x2) - m_Origin.x + 1, max(y1, y2) - m_Origin.y + 1);
+	SetOrigin(std::min(x1, x2), std::min(y1, y2));
+	SetSize(std::max(x1, x2) - m_Origin.x + 1, std::max(y1, y2) - m_Origin.y + 1);
 
 	m_point1.x = x1 - m_Origin.x;
 	m_point1.y = y1 - m_Origin.y;
