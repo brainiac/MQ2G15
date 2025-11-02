@@ -132,9 +132,6 @@
     <ClCompile Include="LGLCD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OGLObjectDiagnostics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FontData6x4.h">

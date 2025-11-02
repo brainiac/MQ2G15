@@ -107,7 +107,6 @@
     <ClCompile Include="LCDUI\LCDSkinnedProgressBar.cpp" />
     <ClCompile Include="LCDUI\LCDStreamingText.cpp" />
     <ClCompile Include="LCDUI\LCDText.cpp" />
-    <ClCompile Include="OGLObjectDiagnostics.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
